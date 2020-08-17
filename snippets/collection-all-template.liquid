@@ -37,6 +37,48 @@
 
   {% include 'collection-banner', title: section.settings.title, description: section.settings.subtext, image: section.settings.image_desktop, image_mobile: section.settings.image_mobile %}
 
+  <section class="page-width">
+    <div class="shop-by-size" onclick="toggleSection()"><span>Shop by size</span></div>
+
+    <div class="text-center-responsive-d">
+    {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+    {% assign total = 0 %}
+    {% for block in section.blocks %}
+      {%- assign collection = collections[block.settings.collection_handle] -%}
+      {% assign has_group = false %}
+          <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
+          {% assign total = total | plus: 1 %}
+    {% endfor %}
+    </div>
+
+    {% assign totaldtwo = total | divided_by: 2 %}
+    {% assign totaldtwominusone = totaldtwo | minus: 1 %}
+    <div class="text-center-responsive-m hidden">
+    {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+    {% assign counter = 0 %}
+    {% for block in section.blocks %}
+      {%- assign collection = collections[block.settings.collection_handle] -%}
+      {% assign has_group = false %}
+
+
+        {% if counter == 0 or counter == totaldtwo  %}
+          <div class="txt-flex-m">
+        {% endif %}
+          <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
+        {% if counter == totaldtwominusone or counter == total %}
+          </div>
+        {% endif %}
+      {% assign counter = counter | plus: 1 %}
+    {% endfor %}
+
+
+    </div>
+
+  </section>
+  <hr class="hr--section-shopby">
+
+
+
   {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
   {% for block in section.blocks %}
     {%- assign collection = collections[block.settings.collection_handle] -%}
@@ -59,7 +101,7 @@
       <header class="collection-header">
         <div class="page-width">
           <div class="section-header text-center">
-            <h2 class="h1">{{ block.settings.collection_title | default: collection.title }}</h2>
+            <h2 class="h1" id="scroll-{{ collection.id }}">{{ block.settings.collection_title | default: collection.title }}</h2>
           </div>
         </div>
       </header>
@@ -105,3 +147,22 @@
     {% endunless %}
   {% endfor %}
 </div>
+
+
+<script>
+  function moveToPos(selector) {
+    $([document.documentElement, document.body]).animate({
+            scrollTop: $(selector).offset().top
+        }, 800);
+  }
+
+  function toggleSection () {
+  $(".shop-by-size").toggleClass('active')
+    $(".text-center-responsive-m").toggleClass('hidden')
+  }
+/*
+  $(document).ready(function () {
+    $(".text-center-responsive-m").toggle();
+  })*/
+
+</script>
