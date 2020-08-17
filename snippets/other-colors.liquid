@@ -1,0 +1,84 @@
+{% assign collection = blank %}
+{% assign which = product.handle | split: 'iphone' | last %}
+{% for _collection in product.collections %}
+  {% if _collection.handle contains which %}
+    {% assign collection = _collection %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% assign current_group = '' %}
+{% for _tag in product.tags %}
+  {% assign tag = _tag | handleize %}
+  {% case tag %}
+    {% when 'matte' %}
+      {% assign current_group = 'matte' %}
+      {% break %}
+    {% when 'leather' %}
+      {% assign current_group = 'leather' %}
+      {% break %}
+    {% when 'glossy' %}
+      {% assign current_group = 'glossy' %}
+      {% break %}
+  {% endcase %}
+{% endfor %}
+
+
+{% assign group_list = '' %}
+
+{% if collection %}
+  {% for product in collection.products %}
+
+    {% for _tag in product.tags %}
+      {% assign tag = _tag | handleize %}
+
+      {% unless group_list contains _tag %}
+        {% case tag %}
+          {% when 'matte' %}
+            {% assign group_list = group_list | append: tag | append: '<>' %}
+          {% when 'leather' %}
+            {% assign group_list = group_list | append: tag | append: '<>' %}
+          {% when 'glossy' %}
+            {% assign group_list = group_list | append: tag | append: '<>' %}
+        {% endcase %}
+      {% endunless %}
+
+    {% endfor %}
+
+  {% endfor %}
+{% endif %}
+
+{% assign group_list = group_list | split: '<>' %}
+{% for group in group_list %}
+
+  {% if group == current_group %}
+    {% continue %}
+  {% endif %}
+
+  <div class="swatch clearfix">
+    <div class="header">{{ group }}</div>
+    <div class="swatch-wrapper">
+      {% for product in collection.products %}
+        {% if product.tags contains group %}
+          {% for option in product.options %}
+            {% if option == 'color' or option == 'Color' %}
+              {% assign i = forloop.index0 %}
+              {% for variant in product.variants %}
+                {% assign color = variant.options[i] %}
+
+                {% assign url = product.url | within: collection | append: '?variant=' | append: variant.id %}
+                <div class="swatch-element color">
+                  <a href="{{ url }}" class="swatch-color clearfix">
+                    <label style="background-color: {{ color | split: ' ' | last | handle }}; background-image: url({{ color | handle | append: '.' | append: file_extension | asset_url }}); background-size: contain;">
+                    </label>
+                  </a>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+{% endfor %}

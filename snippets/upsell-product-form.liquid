@@ -1,0 +1,44 @@
+{% assign color_names = settings.upsell_colors | upcase %}
+
+<form action="/cart/add" method="post" enctype="multipart/form-data" class="product-form product-form-upsell" data-section="upsell">
+  {% unless product.options.size == 1 and product.variants[0].title == 'Default Title' %}
+    {% for option in product.options_with_values %}
+
+      {% if option.name contains 'Color' or option.name contains 'Colour' %}
+        {% include 'swatch' with 'Color', names: color_names %}
+      {% endif %}
+
+      <div class="selector-wrapper js product-form__item">
+        <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+          {{ option.name }}
+        </label>
+
+        <select class="js-select-sizer js-single-option-selector--{{ option.name | downcase | handleize }} single-option-selector single-option-selector-upsell product-form__input" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+          {% for value in option.values %}
+            <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+    {% endfor %}
+  {% endunless %}
+
+  <select name="id" id="ProductSelect-upsell" data-section="upsell" class="product-form__variants no-js">
+    {% for variant in product.variants %}
+      {% if variant.available %}
+        {% if pick_an_option %}
+          <option value="{{ variant.id }}">
+            {{ variant.title }}
+          </option>
+        {% else %}
+          <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+            {{ variant.title }}
+          </option>
+        {% endif %}
+      {% else %}
+        <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+</form>

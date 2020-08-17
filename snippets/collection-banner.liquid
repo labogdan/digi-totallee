@@ -1,0 +1,48 @@
+{% unless image %}
+  {% assign image = section.settings.image | default: collection.image %}
+{% endunless %}
+
+{% unless title %}
+  {% assign title = section.settings.title | default: collection.title %}
+{% endunless %}
+
+{% unless description %}
+  {% assign description = section.settings.description | default: collection.description %}
+{% endunless %}
+
+{% assign image_mobile = section.settings.image_mobile %}
+
+{% if section.settings.show_collection_image and image != blank %}
+  <div class="collection-hero collection-hero__image hero--{{ section.settings.banner_size }} nullify-top">
+
+    <div class="collection-hero__callout-image">
+      {% include 'picture', desktop: image, mobile: image_mobile %}
+    </div>
+
+    <div class="collection-hero__title-wrapper">
+      <div class="page-width">
+        <div class="collection-hero__inner-title-wrapper">
+          <h1 class="collection-hero__title">{{ title }}</h1>
+
+          {% if description != blank %}
+            <p class="rte collection-description small--hide">
+              {{ description }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+  <div class="page-width">
+    <div class="section-header text-center">
+      <h1>{{ title }}</h1>
+      {% if description != blank %}
+        <div class="rte">
+          {{ description }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

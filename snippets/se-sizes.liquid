@@ -1,0 +1,38 @@
+<ul class="se-sizes">
+  {% for product in collection.products %}
+    {% for option in product.options %}
+
+      {% assign normalized_option = option | upcase %}
+      {% if normalized_option == 'SIZE' or normalized_option == 'SELECT YOUR SIZE' %}
+        {% assign tmp_size = '' %}
+        {% assign index = forloop.index0 %}
+
+        {% for variant in product.variants %}
+          {% assign url = product.url | within: collection | append: '?variant=' | append: variant.id %}
+          {% assign size = variant.options[index] %}
+
+          {% assign tmp_size_split = tmp_size | split: '<>' %}
+          {% assign already_has_size = false %}
+          {% for size2 in tmp_size_split %}
+            {% if size2 == size %}
+              {% assign already_has_size = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% if already_has_size == false %}
+
+            {% assign tmp_size = tmp_size | append: size | append: '<>' %}
+
+            <li class="se-size">
+              <a href="{{ url }}" class="se-size__link">
+                {{ size | remove: 'iPhone' | replace: ' Plus', '+' }}
+              </a>
+            </li>
+          {% endif %}
+
+        {% endfor %}
+
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</ul>

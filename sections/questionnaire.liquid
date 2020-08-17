@@ -1,0 +1,210 @@
+<div data-section-id="{{ section.id }}" data-section-type="questionnaire-section" id="questionnaire">
+  <div class="page-width">
+    <div class="list-block">
+
+      <div class="js-questionnaire">
+        {% comment %}{- Selection -}{% endcomment %}
+        <div class="list-block__slide" id="questionnaire-home">
+          <div class="list-block__row">
+            {% if section.settings.title != blank or section.settings.desc != blank%}
+              <div class="section-header text-center">
+                {% if section.settings.title != blank %}
+                  <h3 class="h1 questionnaire-heading">
+                    {{- section.settings.title | escape -}}
+                  </h3>
+                {% endif %}
+                {% if section.settings.desc != blank %}
+                  <h4 class="h2 questionnaire-subheading subheading font-base font-light color-body-text line-height-body">{{- section.settings.desc -}}</h4>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% for block in section.blocks %}
+              {% if block.type != 'step_1' %}
+                {% continue %}
+              {% endif %}
+              <div class="list-block__col one-whole medium-up--one-third">
+                <div class="list-block__card js-questionnaire-select" data-questionnaire="questionnaire-result-{{ block.settings.key }}">
+                  <div class="list-block__card-inner list-block__card-inner--sm-row no-hover">
+                    <div class="list-block__card-item list-block__card-image">
+                      <img src="{{ block.settings.image | img_url: '350x' }}" alt="{{ block.settings.image.alt }}">
+                    </div>
+                    <div class="list-block__card-item list-block__card-content">
+                      {% if block.settings.title != blank %}
+                        <h3 class="list-block__title font-base">{{ block.settings.title }}</h3>
+                      {% endif %}
+
+                      {% if block.settings.lead != blank %}
+                        <p class="list-block__text-lead lead">{{ block.settings.lead }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% comment %}{- Results -}{% endcomment %}
+        {% for parent in section.blocks %}
+          {% if parent.type != 'step_1' %}
+            {% continue %}
+          {% endif %}
+
+          <div class="list-block__slide">
+            <div class="list-block__row js-questionnaire-result" id="questionnaire-result-{{ parent.settings.key }}">
+
+              {% if section.settings.result_title != blank or section.settings.result_desc != blank%}
+                <div class="section-header text-center">
+                  {% if section.settings.result_title != blank %}
+                    <h3 class="h1 questionnaire-heading">
+                      {{- section.settings.result_title | escape -}}
+                    </h3>
+                  {% endif %}
+                  {% if section.settings.result_desc != blank %}
+                    <h2 class="questionnaire-subheading subheading font-base font-light color-body-text line-height-body">{{- section.settings.result_desc -}}</h2>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              <div class="list-block__read-container clearfix">
+                {% assign i = -1 %}
+                {% for block in section.blocks %}
+                  {% if block.type != 'result' or block.settings.parent_key != parent.settings.key %}
+                    {% assign i = i | minus: 1 %}
+                    {% continue %}
+                  {% endif %}
+
+                  {% assign i = i | plus: 1 %}
+
+                  <div class="list-block__col small--one-half medium-up--one-third">
+                    <div class="list-block__card">
+                      <a href="{{ block.settings.link }}" class="list-block__box list-block__box--padding">
+                        <div class="list-block__inner">
+                          <h3 class="list-block__box-title">{{ block.settings.title }}</h3>
+                          <ul class="list-block__contents">
+                            {% assign descs = block.settings.desc | split: '<br>' %}
+
+                            {% for item in descs %}
+                              <li class="list-block__content list-block__desc">{{ item }}</li>
+                            {% endfor %}
+
+                          </ul>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+
+      </div>
+    </div> {% comment %}{- END list-block -}{% endcomment %}
+  </div> {% comment %}{- END page-width -}{% endcomment %}
+</div> {% comment %}{- END section -}{% endcomment %}
+
+{% schema %}
+  {
+    "name": "Questionnaire",
+    "class": "index-section questionnaire contrast-bg-2",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Selection section"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "select your device."
+      },
+      {
+        "type": "textarea",
+        "id": "desc",
+        "label": "Description"
+      },
+      {
+        "type": "header",
+        "content": "Result section"
+      },
+      {
+        "type": "text",
+        "id": "result_title",
+        "label": "Heading",
+        "default": "...and which model?"
+      },
+      {
+        "type": "textarea",
+        "id": "result_desc",
+        "label": "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "step_1",
+        "name": "Step 1 - Selection",
+        "settings": [
+          {
+            "type": "text",
+            "id": "key",
+            "label": "ID",
+            "info": "Required to group together results"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "lead",
+            "label": "Lead"
+          }
+        ]
+      },
+      {
+        "type": "result",
+        "name": "Result",
+        "settings": [
+          {
+            "type": "text",
+            "label": "Parent id",
+            "id": "parent_key"
+          },
+          {
+            "label": "link",
+            "id": "link",
+            "type": "url"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "title"
+          },
+          {
+            "type": "textarea",
+            "id": "desc",
+            "label": "Description",
+            "info": "Use <br> for linebreaks"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Questionnaire",
+        "category": "Collection",
+        "settings": {},
+        "blocks": []
+      }
+    ]
+  }
+{% endschema %}

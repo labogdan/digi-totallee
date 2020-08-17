@@ -1,0 +1,206 @@
+<div class="page-width text-center">
+
+  <div class="showcase-container">
+    <div class="grid">
+
+      {% for i in (1..2) %}
+        {% assign prod = 'product_' | append: i %}
+        {% assign prod_image = prod | append: '_image' %}
+        {% assign prod_display_name = prod | append: '_display_name' %}
+        {% assign prod_price = prod | append: '_price' %}
+        {% assign prod_btn_label = prod | append: '_btn_label' %}
+        {% assign prod_link = prod | append: '_link' %}
+        {% assign prod_has_swatch = prod | append: '_has_swatch' %}
+        {% assign swatch_type = 'swatch_' | append: i %}
+
+        <div class="grid__item medium-up--one-half">
+          <div class="showcase">
+            <div class="showcase__image-wrap">
+              <a href="{{ section.settings[prod_link] }}" class="no-hover js-swatch-link">
+                <img src="{{ section.settings[prod_image] | img_url: 'master' }}"
+                     alt="{{ section.settings[prod_display_name] }}"
+                     class="js-image-swap">
+              </a>
+              <h2 class="product-name lead">
+                <span class="product-price">{{ section.settings[prod_price] }}</span>
+                {{ section.settings[prod_display_name] }}
+              </h2>
+
+              {% if section.settings[prod_has_swatch] %}
+                {% assign colorlist = '' %}
+                {% assign color = '' %}
+
+                <ul class="color-swatch">
+                  {% for block in section.blocks %}
+                    {% if block.type == swatch_type %}
+                      <li class="color-swatch__wrapper">
+                        <a href="#"
+                           class="js-color-swatch color-swatch__link"
+                           data-image="{{ block.settings.color_image | img_url: 'master' }}"
+                           data-variant-id="{{ block.settings.variant_id }}">
+                          <span class="color-swatch__item"
+                                style="background-color: {{ block.settings.color_name | downcase | split: ' ' | last | handle  }};
+                                       background-image: url({{ block.settings.color_name | handle | append: '.png' | asset_url }});
+                                       background-size: contain;">
+                           </span>
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+
+              <div class="product-btn-wrap">
+                <a href="{{ section.settings[prod_link] }}" class="btn btn--cta showcase__btn js-swatch-link">{{ section.settings[prod_btn_label] }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+  <header class="section-header">
+    <h1 class="section-heading h2 js-buddy" data-buddy-count="2">{{ section.settings.heading }}</h1>
+    <p class="section-subtext">{{ section.settings.subtext }}</p>
+  </header>
+</div>
+
+{% schema %}
+  {
+    "name": "Showcase products",
+    "class": "index-section index-section--featured-product-2",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Section heading"
+      },
+      {
+        "type": "textarea",
+        "id": "subtext",
+        "label": "Section subtext"
+      },
+      {
+        "type": "header",
+        "content": "Product 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "product_1_image",
+        "label": "Main image"
+      },
+      {
+        "type": "text",
+        "id": "product_1_display_name",
+        "label": "Display name"
+      },
+      {
+        "type": "text",
+        "id": "product_1_price",
+        "label": "Price"
+      },
+      {
+        "type": "text",
+        "id": "product_1_btn_label",
+        "label": "Button label"
+      },
+      {
+        "type": "text",
+        "id": "product_1_link",
+        "label": "Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_1_has_swatch",
+        "label": "Show swatches"
+      },
+      {
+        "type": "header",
+        "content": "Product 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "product_2_image",
+        "label": "Main image"
+      },
+      {
+        "type": "text",
+        "id": "product_2_display_name",
+        "label": "Display name"
+      },
+      {
+        "type": "text",
+        "id": "product_2_price",
+        "label": "Price"
+      },
+      {
+        "type": "text",
+        "id": "product_2_btn_label",
+        "label": "Button label"
+      },
+      {
+        "type": "text",
+        "id": "product_2_link",
+        "label": "Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_2_has_swatch",
+        "label": "Show swatches"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "swatch_1",
+        "name": "Swatches for Product 1",
+        "settings": [
+          {
+            "type": "text",
+            "id": "color_name",
+            "label": "Color name",
+            "info": "background will be color-name.png"
+          },
+          {
+            "type": "image_picker",
+            "id": "color_image",
+            "label": "Corresponding product image"
+          },
+          {
+            "type": "text",
+            "id": "variant_id",
+            "label": "Variant ID"
+          }
+        ]
+      },
+      {
+        "type": "swatch_2",
+        "name": "Swatches for Product 2",
+        "settings": [
+          {
+            "type": "text",
+            "id": "color_name",
+            "label": "Color name",
+            "info": "background will be color-name.png"
+          },
+          {
+            "type": "image_picker",
+            "id": "color_image",
+            "label": "Corresponding product image"
+          },
+          {
+            "type": "text",
+            "id": "variant_id",
+            "label": "Variant ID"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Showcase products",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

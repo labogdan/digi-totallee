@@ -1,0 +1,117 @@
+<style>
+  {% case section.settings.grid %}
+  {% when '2' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 530px;
+    }
+  {% when '3' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 345px;
+    }
+  {% when '4' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 250px;
+    }
+  {% when '5' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 195px;
+    }
+  {% endcase %}
+</style>
+
+{% case section.settings.grid %}
+  {% when '2' %}
+    {%- assign grid_item_width = 'small-up--one-half' -%}
+    {%- assign image_size = '1500x' -%}
+  {% when '3' %}
+    {%- assign grid_item_width = 'small-up--one-half medium-up--one-third' -%}
+    {%- assign image_size = '345x345' -%}
+  {% when '4' %}
+    {%- assign grid_item_width = 'small-up--one-half medium-up--one-quarter' -%}
+    {%- assign image_size = '250x250' -%}
+  {% when '5' %}
+    {%- assign grid_item_width = 'small-up--one-half medium-up--one-fifth' -%}
+    {%- assign image_size = '195x195' -%}
+{% endcase %}
+
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+{% for block in section.blocks %}
+  {%- assign collection = collections[block.settings.collection_handle] -%}
+
+  <header class="collection-header">
+    <div class="page-width">
+      <div class="section-header text-center">
+        {% if forloop.first %}
+		  <h1>{{ block.settings.collection_title | default: collection.title }}</h1>
+        {% else %}
+          <h2 class="h1">{{ block.settings.collection_title | default: collection.title }}</h2>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="page-width">
+    <div class="grid grid--uniform grid--view-items">
+      {% for product in collection.products limit: product_limit %}
+        <div class="grid__item grid__item--{{ section.id }} {{ grid_item_width }}">
+            {% include 'product-card-grid', grid_image_width: image_size, format_title: true %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% unless forloop.last %}
+    <hr class="hr--section">
+  {% endunless %}
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "2",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "collection"
+          },
+          {
+            "type": "text",
+            "id": "collection_title",
+            "label": "Title",
+            "info": "Leave blank to use default"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

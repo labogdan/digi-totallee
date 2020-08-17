@@ -1,0 +1,48 @@
+{% comment %}
+  -- THIS IS HERE BECAUSE IT BREAKS MY SYNTAX HIGHLIGHTING
+  size_list: array
+  avail_sizes: array
+  brand: string
+{% endcomment %}
+
+<script>
+  var totallee = totallee || {}
+  totallee.productEntity = totallee.productEntity || {}
+  totallee.metafieldsById = totallee.metafieldsById || {}
+  totallee.addonsBySize = totallee.addonsBySize || {}
+
+  {% if is_cart %}
+    totallee.currentSize = {{ current_size | json }}
+  {% else %}
+    totallee.currentSize = totallee.currentSize || {{ current_size | json }}
+  {% endif %}
+
+  {% for size in avail_sizes %}
+    {% assign curr_product = all_products[size] %}
+    totallee.productEntity[{{ curr_product.id | json }}] = {{ curr_product | json }}
+  {% endfor %}
+
+  // Capture metafields by ID
+  {% for variant in product.variants %}
+    {% if variant.metafields.c_f != blank %}
+      totallee.metafieldsById[{{ variant.id | json }}] = {{ variant.metafields.c_f | json }}
+    {% endif %}
+  {% endfor %}
+
+  // Capture addons by size
+  {% for size in size_list %}
+    {% assign head = product.handle | split: brand | first %}
+    {% assign addon_handle = brand | append: '-' | append: size | append: '-screen-protector' | handleize %}
+    {% assign target_handle = 'thin-' | append: brand | append: '-' | append: size | append: '-case' | handleize %}
+
+    {% if all_products[addon_handle] != blank %}
+      {% assign prod = all_products[addon_handle] %}
+      {% assign variant_id = prod.variants[0].id %}
+      totallee.addonsBySize[{{ size | json }}] = {
+        id: {{ variant_id | json }},
+        url: {{ prod.url | json }},
+        target: "/products/{{ target_handle }}",
+      }
+    {% endif %}
+  {% endfor %}
+</script>

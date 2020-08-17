@@ -1,0 +1,64 @@
+<header class="collection-header">
+  <div class="page-width">
+    <div class="section-header text-center">
+      <h1>{{ page.title }}</h1>
+    </div>
+  </div>
+</header>
+
+<div class="se">
+  {% for block in section.blocks %}
+    {%- assign collection = collections[block.settings.collection_handle] -%}
+
+    <div class="se-block">
+      <div class="se-sidebar">
+
+        <h4 class="se-title">{{ block.settings.collection_title | default: collection.title }}</h4>
+
+        <a href="#" class="js-accordion-toggle medium-up--hide">about</a>
+        <div class="js-accordion-content">
+          <p class="se-desc">{{ collection.description }}</p>
+
+         <span style="color: #6e6e6e;">available for</span>
+          {% include 'se-sizes' %}
+        </div>
+      </div>
+
+      <div class="se-collection">
+        {% include 'se-products-card' %}
+      </div>
+    </div>
+
+    {% unless forloop.last %}
+      <hr class="hr--section">
+    {% endunless %}
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "Limted Edition Collection",
+    "settings": [
+
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "collection"
+          },
+          {
+            "type": "text",
+            "id": "collection_title",
+            "label": "Title",
+            "info": "Leave blank to use default"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

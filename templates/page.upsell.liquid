@@ -1,0 +1,122 @@
+{% comment %}
+  - Determine whether to use default upsell or alt upsell
+{% endcomment %}
+{% assign s = 'upsell' %}
+
+{% if settings.upsell_alt %}
+  {% assign p_alt = settings.upsell_alt_for | split: ',' %}
+  {% for item in cart.items %}
+    {% assign i_handle = item.product.handle %}
+    {% for pp in p_alt %}
+      {% assign p_handle = pp | strip %}
+      {% if p_handle == i_handle %}
+        {% assign s = 'upsell_alt' %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}
+
+{% assign upsell_product = s | append: '_product' %}
+{% assign product = all_products[settings[upsell_product]] %}
+
+{% assign u_image = s | append: '_image' %}
+{% assign upsell_image = settings[u_image] %}
+
+{% assign shipping_threshold = settings.free_shipping_min | plus: 0 %}
+
+{% assign has_upsell_product = false %}
+{% for item in cart.items %}
+  {% if item.product_id == product.id %}
+    {% assign has_upsell_product = true %}
+  {% endif %}
+{% endfor %}
+
+{%- assign headings = 'how about an extra long charging cable?<>all orders over $30 ship free' | split: '<>' -%}
+{%- assign subheadings = 'charge your iPhone anywhere with this 1.5m chord' | split: '<>' -%}
+
+{%- assign heading = headings[0] -%}
+{%- assign subheading = subheadings[0] -%}
+{%- assign btn_label = 'Skip' -%}
+
+{%- assign current_variant = product.variants[1] -%}
+
+{% if cart.total_price < shipping_threshold %}
+  {%- assign heading = headings[1] -%}
+  {%- assign subheading = subheadings[1] -%}
+  {%- assign remaining = shipping_threshold | minus: cart.total_price | money_without_trailing_zeros -%}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+{% endif %}
+
+<div class="contrast-bg">
+  <div class="page-width">
+    <div class="section-header text-center">
+      <h1 class="section-heading">{{ heading }}</h1>
+      <p class="section-subtext">
+        {{ subheading }}
+        {% if remaining != blank %}
+          (you're {{ remaining }} away)
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="upsell-content">
+  <div class="page-width text-center">
+    <div class="showcase-container">
+      <div class="grid">
+        <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
+          <div class="showcase">
+            <div class="showcase__image-wrap">
+              <img src="{{ upsell_image | img_url: 'master' }}" alt="{{ product.name }}">
+            </div>
+            <div class="showcase__text-wrap">
+              <h2 class="product-name lead h3">
+                <span class="product-price">{% include 'product-price', product: current_variant %}</span>
+                {{ product.title }}
+              </h2>
+              <p class="product-subtext">{{ product.description | strip_html }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form action="/cart/add" method="post" enctype="multipart/form-data" class="product-form product-form-{{ section.id }}" data-section="{{ section.id }}">
+
+        <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option {% if variant == current_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                {{ variant.title }}
+              </option>
+            {% else %}
+              <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+        <div class="product-form__item product-form__item--submit">
+          <button type="submit" name="add" id="AddToCart-{{ section.id }}" {% unless current_variant.available %}disabled="disabled"{% endunless %} class="btn product-form__cart-submit{% if product.options.size == 1 and product.variants[0].title == 'Default Title' %} product-form__cart-submit--small{% endif %}">
+            <span id="AddToCartText-{{ section.id }}">
+              {% unless current_variant.available %}
+                {{ 'products.product.sold_out' | t }}
+              {% else %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% endunless %}
+            </span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="upsell-footer">
+  <a href="/checkout" class="btn btn--cta">{{ btn_label }}</a>
+</div>
+
+<script type="application/json" id="ProductJson-{{ section.id }}">
+  {{ product | json }}
+</script>

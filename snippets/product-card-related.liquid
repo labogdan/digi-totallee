@@ -1,0 +1,69 @@
+{% unless grid_image_width %}
+  {%- assign grid_image_width = '1500x' -%}
+{% endunless %}
+{%- assign grid_image_scale = '1' -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="grid-view-item{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+              
+  <a class="grid-view-item__link text-center js-swatch-link" href="{{ product.url | within: collection }}">
+    <img class="grid-view-item__image js-image-swap"
+         src="{{ product.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}"
+         alt="{{ product.featured_image.alt }}">
+
+    {% assign product_title = product.title %}
+    {% if format_title %}
+      {%- assign product_title =
+        product_title
+          | remove: 'iPhone 6 plus'
+          | remove: 'iPhone 6'
+          | remove: 'iPhone 7 plus'
+          | remove: 'iPhone 8'
+          | remove: 'iPhone 8 plus'
+          | remove: 'iPhone X'
+          | remove: 'iPhone 7'
+          | remove: 'Galaxy Note8'
+          | remove: 'Galaxy S8 Plus'
+          | remove: 'Galaxy S8'
+          | remove: 'Galaxy S9 Plus'
+          | remove: 'Galaxy S9'
+          | remove: 'Pixel 2'
+          | remove: 'Pixel 2 XL' -%}
+    {% endif %}
+
+    {% if template contains 'limited' %}
+      <h2 class="product-name lead h3">
+        <span class="product-price">
+          {% include 'product-price' %}
+        </span>
+        {{ product_title }}
+      </h2>
+    {% else %}
+      <h3 class="product-name lead">
+        {{ product.title }} | 
+        <span class="product-price">
+          {% include 'product-price' %}
+        </span>
+      </h3>
+    {% endif %}
+
+  </a>
+
+  {% include 'color-swatch' %}
+
+  <div class="text-center product-btn-wrap">
+    {% if quick_add %}
+      <a href="{{ product.url | within: collection }}"
+         class="btn btn--cta showcase__btn js-swatch-link js-quick-add"
+         data-cart-add="{{ current_variant.id }}"
+         data-cart-quantity="1">Add to Cart</a>
+    {% else %}
+      <a href="{{ product.url | within: collection }}" class="btn btn--cta showcase__btn js-swatch-link">Shop Now</a>
+    {% endif %}
+  </div>
+
+    <div class="text-center product-secondary-link">
+      <a href="{{ product.url | within: collection }}" class="text-underline-2 text-italic js-swatch-link">Learn More</a>
+    </div>
+</div>

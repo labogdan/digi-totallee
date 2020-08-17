@@ -1,0 +1,6 @@
+{% assign sku = get-case-size %}
+
+{% assign size_list = 'X<>8-plus<>8<>7-plus<>7<>6-plus<>6' | split: '<>' %}
+{% assign size_hash = '010<>012<>011<>009<>008<>007<>006<>' | split: '<>' %}
+
+{% assign size = sku | split: '-' | first | replace: '010', 'x' | replace: '012', '8-plus' | replace: '011', '8' | replace: '009', '7-plus' | replace: '008', '7' | replace: '007', '6-plus' | replace: '006', '6' %}

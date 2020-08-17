@@ -1,0 +1,55 @@
+<div class="page-width">
+  {% if section.settings.title != blank %}
+    <div class="hp-press-header section-header text-center">
+      <h3 class="h1">{{ section.settings.title }}</h3>
+    </div>
+
+    <div class="hp-press" id="hp-press">
+      {% for block in section.blocks %}
+        <div class="hp-press__item">
+          <h2 class="hp-press__quote font-base font-light color-body-text">{{ block.settings.quote }}</h2>
+          <a class="hp-press__link">
+            <img src="{{ block.settings.image | img_url: '320x' }}" alt="{{ block.settings.image.alt }}" class="hp-press__image">
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Press",
+    "class": "index-section border-top",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "press",
+        "name": "Press",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "textarea",
+            "label": "Quote",
+            "id": "quote"
+          },
+          {
+            "type": "text",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

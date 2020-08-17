@@ -1,0 +1,381 @@
+<div id="CartDrawer">
+  <div class="s-drawer__header">
+    <div class="s-drawer__header-inner">
+      <div class="s-drawer__title h3">{{ 'cart.general.title' | t }}</div>
+    </div>
+          <span class="js-cart-nav-toggle">
+            {% include 'icon-close' %}
+          </span>     
+  </div>
+  <div class="shipping-mot">
+    <div class="free-ship">Congrats! You've earned free shipping</div>
+    <div class="mot-text">You're <span class="cart-total-mot"></span> away from FREE shipping</div>
+  	<div class="progress">
+    	<div class="progress-bar"></div>
+  	</div>
+  </div>  
+  <div id="CartContainer"></div>
+  <div class="upsell">
+    <div class="heading" style="display:none;">Frequently bought together...</div>
+  	{% for producta in collections.iphone-screen-protectors.products %}
+    <form class="upsell-form {{ producta.title | handleize | split: '-screen-protector' | first | append: '-case' | prepend: 'thin-' }}" data-upsell="{{ producta.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in producta.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ producta.featured_image.src | img_url: '90x' }}" alt="{{ producta.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ producta.url }}">{{ producta.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ producta.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ producta.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}
+  	{% for productb in collections.pixel-screen-protectors.products %}
+    <form class="upsell-form {{ productb.title | handleize | split: '-screen-protector' | first | append: '-case' | prepend: 'thin-' }}" data-upsell="{{ productb.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in productb.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productb.featured_image.src | img_url: '90x' }}" alt="{{ productb.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productb.url }}">{{ productb.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ productb.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ productb.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}
+  	{% for productc in collections.galaxy-screen-protectors.products %}
+    <form class="upsell-form {% if productc.title contains '+' %}{{ productc.title | handleize | split: '-screen-protector' | first | append: 'plus-case' | prepend: 'thin-' }}{% else %}{{ productc.title | handleize | split: '-screen-protector' | first | append: '-case' | prepend: 'thin-' }}{% endif %}" data-upsell="{% if productc.title contains '+' %}{{ productc.handle | replace: '-plus', 'plus' }}{% else %}{{ productc.title | handleize }}{% endif %}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in productc.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productc.featured_image.src | img_url: '90x' }}" alt="{{ productc.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productc.url }}">{{ productc.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ productc.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ productc.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}
+    {% assign productr = all_products.phone-ring-grip-holder %}
+    <form class="upsell-form {{ productr.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in productr.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productr.featured_image.src | img_url: '90x' }}" alt="{{ productr.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productr.url }}">{{ productr.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ productr.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ productr.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form>    
+  	{% for producta in collections.thin-iphone-cases.products %}
+    <form class="upsell-form {{ producta.title | handleize | split: '-case' | first | append: '-screen-protector' | remove: 'thin-' }}" data-upsell="{{ producta.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% for tag in producta.tags %}
+            	{% if tag contains '1-' %}
+            		{% assign varianta = tag | split: '1-' | last %}
+            	{% endif %}
+            {% endfor %}
+            {% if varianta %}
+                <img class="grid-view-item__image js-image-swap" src="{% for variant in producta.variants %}{% if variant.title == varianta %}{{ variant.image.src | img_url: '90x' }}{% endif %}{% endfor %}" alt="{{ image.alt }}">
+            {% else %}
+            {% assign upimage = 'nope' %}
+            {% for image in producta.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ producta.featured_image.src | img_url: '90x' }}" alt="{{ producta.featured_image.alt }}">
+          	{% endif %}
+            {% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ producta.url }}">{{ producta.title }}</a>{% if varianta %}<span class="ajaxcart__product-meta">{{ varianta }}</span>{% endif %}</div>  
+            <a href="{{ producta.url }}"><div class="btn" data-cart-add="{% for variant in producta.variants %}{% if variant.title == varianta %}{{ variant.id }}{% endif %}{% endfor %}">Add <span class="divider">|</span> <span class="price">{{ producta.price | money_without_trailing_zeros }}</span></div></a>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}
+  	{% for productb in collections.thin-pixel-cases.products %}
+    <form class="upsell-form {{ productb.title | handleize | split: '-case' | first | append: '-screen-protector' | remove: 'thin-' }}" data-upsell="{{ productb.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% for tag in productb.tags %}
+            	{% if tag contains '1-' %}
+            		{% assign variantb = tag | split: '1-' | last %}
+            	{% endif %}
+            {% endfor %}
+            {% if variantb %}
+                <img class="grid-view-item__image js-image-swap" src="{% for variant in productb.variants %}{% if variant.title == varianta %}{{ variant.image.src | img_url: '90x' }}{% endif %}{% endfor %}" alt="{{ image.alt }}">
+            {% else %}
+            {% assign upimage = 'nope' %}
+            {% for image in productb.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productb.featured_image.src | img_url: '90x' }}" alt="{{ productb.featured_image.alt }}">
+          	{% endif %}
+            {% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productb.url }}">{{ productb.title }}</a>{% if variantb %}<span class="ajaxcart__product-meta">{{ variantb }}</span>{% endif %}</div>  
+            <a href="{{ productb.url }}"><div class="btn" data-cart-add="{% for variant in productb.variants %}{% if variant.title == variantb %}{{ variant.id }}{% endif %}{% endfor %}">Add <span class="divider">|</span> <span class="price">{{ productb.price | money_without_trailing_zeros }}</span></div></a>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}
+  	{% for productc in collections.thin-galaxy-cases.products %}
+    <form class="upsell-form {% if productc.title contains '+' %}{{ productc.title | handleize | split: '-case' | first | append: 'plus-screen-protector' | remove: 'thin-' }}{% else %}{{ productc.title | handleize | split: '-case' | first | append: '-screen-protector' | remove: 'thin-' }}{% endif %}" data-upsell="{% if productc.title contains '+' %}{{ productc.handle | replace: '-plus', 'plus' }}{% else %}{{ productc.title | handleize }}{% endif %}" action="/cart/add" method="post" enctype="multipart/form-data" style="display:none;">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% for tag in productc.tags %}
+            	{% if tag contains '1-' %}
+            		{% assign variantc = tag | split: '1-' | last %}
+            	{% endif %}
+            {% endfor %}
+            {% if variantc %}
+                <img class="grid-view-item__image js-image-swap" src="{% for variant in productc.variants %}{% if variant.title == variantc %}{{ variant.image.src | img_url: '90x' }}{% endif %}{% endfor %}" alt="{{ image.alt }}">
+            {% else %}
+            {% assign upimage = 'nope' %}
+            {% for image in productc.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productc.featured_image.src | img_url: '90x' }}" alt="{{ productc.featured_image.alt }}">
+          	{% endif %}
+            {% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productc.url }}">{{ productc.title }}</a>{% if variantc %}<span class="ajaxcart__product-meta">{{ variantc }}</span>{% endif %}</div>  
+            <a href="{{ productc.url }}"><div class="btn" data-cart-add="{% for variant in productc.variants %}{% if variant.title == variantc %}{{ variant.id }}{% endif %}{% endfor %}">Add <span class="divider">|</span> <span class="price">{{ productc.price | money_without_trailing_zeros }}</span></div></a>
+          </div>
+    	</div>
+    </form>
+    {% endfor %}  
+    <div class="upsell-holder"></div>
+    {% assign productx = all_products.iphone-charger-cable %}
+    <form class="upsell-form {{ productx.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in productx.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productx.featured_image.src | img_url: '90x' }}" alt="{{ productx.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productx.url }}">{{ productx.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ productx.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ productx.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form> 
+    {% assign productw = all_products.wireless-charger %}
+    <form class="upsell-form {{ productw.title | handleize }}" action="/cart/add" method="post" enctype="multipart/form-data">
+      	<div class="ajaxcart__product-wrapper">
+          <div class="ajaxcart__product-image-wrapper">
+            {% assign upimage = 'nope' %}
+            {% for image in productw.images %}
+            	{% if image.alt contains 'upsell' %}
+           			{% assign upimage = 'yesum' %}
+            		 <img class="grid-view-item__image js-image-swap" src="{{ image.src | img_url: '90x' }}" alt="{{ image.alt }}">
+            	{% endif %}
+            {% endfor %}
+            {% if upimage == 'nope' %}
+        	<img class="grid-view-item__image js-image-swap" src="{{ productw.featured_image.src | img_url: '90x' }}" alt="{{ productw.featured_image.alt }}">
+          	{% endif %}
+          </div>
+          <div class="ajaxcart__product-right">
+            <div class="ajaxcart__product-name"><a href="{{ productw.url }}">{{ productw.title }}</a></div>
+            <button class="btn" type="submit" name="add" data-cart-add="{{ productw.variants.first.id }}">Add <span class="divider">|</span> <span class="price">{{ productw.price | money_without_trailing_zeros }}</span></button>
+          </div>
+    	</div>
+    </form> 
+    <div class="hi" style="display:none;"></div>
+  </div>  
+
+</div>
+  <script>
+	$(document.body).on('afterCartLoad.ajaxCart', function (evt, cart) {
+      $('.upsell-form').css('display', 'none');
+      $('form.iphone-charger-cable-1-m').css('display', 'block'); 
+      $('form.wireless-charger').css('display', 'block');
+      $('form.phone-ring-grip').css('display', 'block'); 
+      if (cart.total_price < 1) {
+          $('.upsell-form').css('display', 'none');
+          $('.upsell .heading').css('display', 'none');
+      }
+      $(".ajaxcart .ajaxcart__product-name").each(function() {
+      	var titlex = $(this).text().toLowerCase().replace(/ /g,'-').replace(/[+]/g,'plus').replace(/\(|\)/g, "");  
+       	$('.upsell-form.' + titlex).css('display', 'block');   
+        if (titlex == 'iphone-charger-cable-1-m') {
+          $('form.iphone-charger-cable-1-m').css('display', 'none'); 
+        }     
+        if (titlex == 'wireless-charger') {
+          $('form.wireless-charger').css('display', 'none'); 
+        } 
+        if (titlex == 'phone-ring-grip') {
+          $('form.phone-ring-grip').css('display', 'none'); 
+        }           
+          $('form[data-upsell="'+ titlex +'"]').css('display', 'none'); 
+          $('form[data-upsell="'+ titlex +'"]').removeClass('upsell-form');  
+      });
+  		var arr = $(".ajaxcart .ajaxcart__product-name").map(function() { 
+              return $(this).text().toLowerCase().replace(/ /g,'-').replace(/\(|\)/g, "");
+            }).get();
+      		var group = arr.join(','); 
+              if (group.indexOf("iphone") === -1) {
+  				$('form.iphone-charger-cable-1-m').css('display', 'none');   
+              }   
+  var hid = true;
+setTimeout(function() { 
+$('.upsell-form').each(function(index,item){
+      if($(item).css("display") != "none") {
+        hid = false;
+      }
+  }).promise().done(function(){
+    if(hid == true) {
+      $('.upsell .heading').css('display', 'none');
+    } else {
+      $('.upsell .heading').css('display', 'block');
+    }
+  });   
+}, 100);     
+    });
+$(document).click(function(){      
+  var hid = true;
+setTimeout(function() { 
+$('.upsell-form').each(function(index,item){
+      if($(item).css("display") != "none") {
+        hid = false;
+      }
+  }).promise().done(function(){
+    if(hid == true) {
+      $('.upsell .heading').css('display', 'none');
+    } else {
+      $('.upsell .heading').css('display', 'block');
+    }
+  }); 
+}, 100);   
+ });     
+  </script>
+{% if section.settings.shipping_banner_enable %}
+  <script>
+    var theme = theme || {}
+    theme.shipping = theme.shipping || {}
+    theme.shipping.enabled = true
+    theme.shipping.minimum = {{ section.settings.shipping_banner_min | json }}
+    theme.shipping.message = {{ section.settings.shipping_message | json }}
+    theme.shipping.completeMessage = {{ section.settings.shipping_complete_message | json }}
+    theme.shipping.nullMessage = {{ section.settings.shipping_null_message | json }}
+  </script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "AJAX Cart",
+    "class": "s-drawer s-drawer--right",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shipping banner"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_banner_enable",
+        "label": "Enable shipping banner"
+      },
+      {
+        "type": "text",
+        "id": "shipping_banner_min",
+        "label": "Free shipping minimum total",
+        "info": "Used for shipping banner. The minimum total for free shipping. 10000 = 100USD"
+      },
+      {
+        "type": "header",
+        "content": "Messages"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use \"{{ money }}\" to display remaining money for free shipping. Use \"{{ product }}\" to display product title."
+      },
+      {
+        "type": "richtext",
+        "id": "shipping_message",
+        "label": "Shipping / upsell text"
+      },
+      {
+        "type": "richtext",
+        "id": "shipping_complete_message",
+        "label": "Shipping / upsell requirements met text"
+      },
+      {
+        "type": "richtext",
+        "id": "shipping_null_message",
+        "label": "Nothing in cart"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Upsell product",
+        "settings": [
+          {
+            "type": "product",
+            "label": "Product",
+            "id": "upsell_product"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

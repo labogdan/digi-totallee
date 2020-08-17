@@ -1,0 +1,132 @@
+{% assign size = '' %}
+
+{% assign grid_image_width = '600x' %}
+{% assign grid_iamge_scale = '1' %}
+
+{% assign price_condition = '' %}
+
+{% for rule in collection.rules %}
+
+  {% if rule.column == 'variant_price' and rule.relation == 'less_than' %}
+    {% assign price_condition = rule.condition | plus: 0 %}
+  {% endif %}
+{% endfor %}
+
+{% capture collection_items %}
+  {% for product in collection.products %}
+
+    {% for option in product.options %}
+
+      {% if option == 'Color' %}
+        {% assign index = forloop.index0 %}
+        {% for variant in product.variants %}
+
+          {% unless variant.metafields.c_f.hide_from_collection %}
+            {% assign color = variant.options[index] %}
+            {% assign current_size = variant.options[size_index] %}
+            {% assign url = product.url | within: collection | append: '?variant=' | append: variant.id %}
+
+            {% if size == blank %}
+              {% for tag in product.tags %}
+                {% assign tag_handle = tag | handleize %}
+                {% if tag_handle contains 'iphone-' %}
+                  {% assign size = tag_handle %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            <div class="grid__item small-up--one-half medium-up--one-third">
+              <div class="grid-view-item{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+                <a class="grid-view-item__link text-center" href="{{ url }}">
+                  <img class="grid-view-item__image" src="{{ variant.image | img_url: grid_image_width, scale: grid_image_scale }}" alt="{{ product.featured_image.alt }}">
+                  <h3 class="product-name lead">
+                    <span class="product-price">
+                      {% include 'product-price', variant: variant %}
+                    </span>
+                    {{ product.title }}
+                  </h3>
+
+                  <p class="product-subtext">{{ color | downcase }}</p>
+                </a>
+
+                {% if show_cta %}
+                  <div class="text-center product-btn-wrap">
+                    <a href="{{ url }}" class="btn btn--cta showcase__btn">Shop Now</a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endunless %}
+
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endcapture %}
+
+{% capture se_items %}
+  {% assign se_collection = collections.all-special-edition %}
+  {% for product in se_collection.products %}
+    {% for option in product.options %}
+
+      {% if option == 'Color' %}
+        {% assign opt_color_index = forloop.index0 %}
+      {% endif %}
+
+      {% if option == 'Size' %}
+        {% assign opt_size_index = forloop.index0 %}
+      {% endif %}
+
+    {% endfor %}
+
+    {% for variant in product.variants %}
+
+      {% unless variant.metafields.c_f.hide_from_collection %}
+        {% assign se_size = variant.options[opt_size_index] | handleize %}
+        {% assign se_color = variant.options[opt_color_index] %}
+
+        {% if se_color == blank %}
+          {% assign se_color = product.title | split: 'iPhone' | first %}
+        {% endif %}
+
+        {% if se_size == size %}
+          {% assign url = product.url | within: collection | append: '?variant=' | append: variant.id %}
+
+          <div class="grid__item small-up--one-half medium-up--one-third">
+            <div class="grid-view-item{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+              <a class="grid-view-item__link text-center" href="{{ url }}">
+                <img class="grid-view-item__image" src="{{ variant.image | img_url: grid_image_width, scale: grid_image_scale }}" alt="{{ product.featured_image.alt }}">
+                <h3 class="product-name lead">
+                  <span class="product-price">
+                    {% include 'product-price', variant: variant %}
+                  </span>
+                  {{ product.title }}
+                </h3>
+
+                <p class="product-subtext">{{ se_color | downcase }}</p>
+              </a>
+
+              {% if show_cta %}
+                <div class="text-center product-btn-wrap">
+                  <a href="{{ url }}" class="btn btn--cta showcase__btn">Shop Now</a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+        {% endif %}
+      {% endunless %}
+
+    {% endfor %}
+
+  {% endfor %}
+{% endcapture %}
+
+<div class="page-width">
+  <div class="grid grid--uniform grid--view-items">
+    {{ collection_items }}
+    {{ se_items }}
+  </div>
+
+</div>

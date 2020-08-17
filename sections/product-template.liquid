@@ -1,0 +1,205 @@
+{% include 'product-template' %}
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "header",
+        "content": "PRODUCT PAGE"
+      },
+      {
+        "type": "header",
+        "content": "Shopping Bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "shopbar",
+        "label": "Enable shopbar",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "shopbar_logo",
+        "label": "Image / logo",
+        "info": "Left side; .png recommended"
+      },
+      {
+        "type": "text",
+        "id": "shopbar_logo_max_width",
+        "label": "Logo max width",
+        "default": "115"
+      },
+      {
+        "type": "text",
+        "id": "shopbar_btn_label",
+        "label": "Button label",
+        "info": "Right side",
+        "default": "Buy Now"
+      },
+      {
+        "type": "header",
+        "content": "Single Product"
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "full",
+            "label": "Full-width"
+          }
+        ],
+        "default": "large"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": "Show description",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quantity_selector",
+        "label": "Show quantity selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_labels",
+        "label": "Show variant labels",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_zoom",
+        "label": "Enable image zoom",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Add on Product"
+      },
+      {
+        "type": "checkbox",
+        "id": "add_on_product",
+        "label": "Show add on product",
+        "info": "Disabled for handles containing 'screen-protector'",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "add_on_product_label",
+        "label": "Label",
+        "default": "add a screen protector for $15"
+      },
+      {
+        "type": "header",
+        "content": "Promise 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "promise_1_show",
+        "label": "Show"
+      },
+      {
+        "type": "image_picker",
+        "id": "promise_1_icon",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "promise_1_text",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "Promise 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "promise_2_show",
+        "label": "Show"
+      },
+      {
+        "type": "image_picker",
+        "id": "promise_2_icon",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "promise_2_text",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "Promise 3"
+      },
+      {
+        "type": "checkbox",
+        "id": "promise_3_show",
+        "label": "Show"
+      },
+      {
+        "type": "image_picker",
+        "id": "promise_3_icon",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "promise_3_text",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "Swatch tag"
+      },
+      {
+        "type": "checkbox",
+        "id": "swatch_tag_enable",
+        "label": "Show tag on color swatches",
+        "info": "Set via variant metafields"
+      },
+      {
+        "type": "image_picker",
+        "id": "swatch_tag_image",
+        "label": "Tag image"
+      },
+      {
+        "type": "image_picker",
+        "id": "swatch_tag_image_mobile",
+        "label": "Tag image for mobile"
+      },
+      {
+        "type": "text",
+        "id": "swatch_tag_width",
+        "label": "Width"
+      }
+    ]
+  }
+{% endschema %}
+

@@ -1,0 +1,107 @@
+<div class="collection-all-template">
+  <style>
+    {% case section.settings.grid %}
+    {% when '2' %}
+      .grid__item--{{section.id}} .grid-view-item__image {
+        max-height: 530px;
+      }
+    {% when '3' %}
+      .grid__item--{{section.id}} .grid-view-item__image {
+        max-height: 345px;
+      }
+    {% when '4' %}
+      .grid__item--{{section.id}} .grid-view-item__image {
+        max-height: 250px;
+      }
+    {% when '5' %}
+      .grid__item--{{section.id}} .grid-view-item__image {
+        max-height: 195px;
+      }
+    {% endcase %}
+  </style>
+
+  {% case section.settings.grid %}
+    {% when '2' %}
+      {%- assign grid_item_width = 'small-up--one-half' -%}
+      {%- assign image_size = '1500x' -%}
+    {% when '3' %}
+      {%- assign grid_item_width = 'small-up--one-half medium-up--one-third' -%}
+      {%- assign image_size = '345x345' -%}
+    {% when '4' %}
+      {%- assign grid_item_width = 'small-up--one-half medium-up--one-quarter' -%}
+      {%- assign image_size = '250x250' -%}
+    {% when '5' %}
+      {%- assign grid_item_width = 'small-up--one-half medium-up--one-fifth' -%}
+      {%- assign image_size = '195x195' -%}
+  {% endcase %}
+
+  {% include 'collection-banner', title: section.settings.title, description: section.settings.subtext, image: section.settings.image_desktop, image_mobile: section.settings.image_mobile %}
+
+  {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+  {% for block in section.blocks %}
+    {%- assign collection = collections[block.settings.collection_handle] -%}
+    {% assign has_group = false %}
+    {% for product in collection.products %}
+      {% for variant in product.variants %}
+        {% assign _group = variant.metafields.c_f.color_group | default: blank %}
+        {% if _group != blank %}
+          {% assign has_group = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+    {% unless has_group %}
+      {% break %}
+    {% endunless %}
+
+    <section class="page-width">
+      <header class="collection-header">
+        <div class="page-width">
+          <div class="section-header text-center">
+            <h2 class="h1">{{ block.settings.collection_title | default: collection.title }}</h2>
+          </div>
+        </div>
+      </header>
+
+      <div class="grid grid--uniform grid--view-items">
+        {% assign count = 0 %}
+        {% for product in collection.products %}
+          {% assign groups = '' %}
+          {% if count > product_limit %}
+            {% break %}
+          {% endif %}
+
+          {% for variant in product.variants %}
+            {% assign _group = variant.metafields.c_f.color_group | default: blank %}
+            {% unless _group == blank or groups contains _group %}
+              {% assign groups = groups | append: _group | append: '<>' %}
+            {% endunless %}
+          {% endfor %}
+          {% assign groups = groups | split: '<>' %}
+
+          {% for group in groups %}
+            {% if count > product_limit %}
+              {% break %}
+            {% endif %}
+            {% assign count = count | plus: 1 %}
+
+            <div class="grid__item grid__item--{{ section.id }} {{ grid_item_width }}">
+              {% include 'product-card-grid-with-color-groups', grid_image_width: image_size,
+                                                                format_title: true,
+                                                                secondary_label: block.settings.secondary_link_label,
+                                                                quick_add: true,
+                                                                hide_description: true,
+                                                                group: group %}
+            </div>
+
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </section>
+
+    {% unless forloop.last %}
+      <hr class="hr--section">
+    {% endunless %}
+  {% endfor %}
+</div>

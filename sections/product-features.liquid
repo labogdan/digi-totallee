@@ -1,0 +1,104 @@
+<div class="hp-features border-top">
+  {% assign counter = 0 %}
+  {% for block in section.blocks %}
+
+    {% assign counter = counter | plus: 1 %}
+    {% assign mod = counter | modulo: 2 %}
+
+    {% capture image_component %}
+      {% assign block_image = block.settings.image | img_url: 'master' %}
+      {% assign block_classname = 'half-block__item half-block__item--bg' %}
+      {% if mod == 0 %}
+        {% assign block_classname = block_classname | append: ' half-block__item--even' %}
+      {% endif %}
+
+      <div class="{{ block_classname }}"
+           style="background-image: url('{{ block_image }}');">
+        <img src="{{ block_image }}"
+             alt="{{ block.settings.image.alt | default: block.settings.headline }}"
+             class="half-block__image">
+      </div>
+    {% endcapture %}
+
+    {% capture desc_component %}
+      <div class="half-block__item">
+        <div class="half-block__desc">
+          <h4 class="h2">{{ block.settings.headline }}</h4>
+          <p>{{ block.settings.desc }}</p>
+          {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+            <a href="{{ block.settings.link_url }}" class="half-block__text-link">{{ block.settings.link_text }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endcapture %}
+
+    <div class="half-block">
+      {{ image_component }}
+      {{ desc_component }}
+    </div>
+  {% endfor %}
+
+  {% if section.settings.btn_label != blank and section.settings.btn_url != blank %}
+    <div class="text-center hp-features__footer">
+      <a href="{{ section.settings.btn_url }}" class="btn btn--cta">{{ section.settings.btn_label }}</a>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Half blocks",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "btn_label",
+        "label": "Button label"
+      },
+      {
+        "type": "text",
+        "id": "btn_url",
+        "label": "Button link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "feature",
+        "name": "Feature",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "headline",
+            "label": "Headline"
+          },
+          {
+            "type": "textarea",
+            "id": "desc",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+          },
+          {
+            "type": "text",
+            "id": "link_url",
+            "label": "Link url"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Half Blocks",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

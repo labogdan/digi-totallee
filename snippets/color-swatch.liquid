@@ -1,0 +1,73 @@
+{% assign has_color = false %}
+
+{% if file_extension == blank %}
+  {% assign file_extension = 'png' %}
+{% endif %}
+
+{% if grid_image_width == blank %}
+  {% assign grid_image_width = '1024x' %}
+{% endif %}
+
+{% if grid_image_scale == blank %}
+  {% assign grid_image_scale = 1 %}
+{% endif %}
+
+{% for option in product.options %}
+  {% assign opt = option | downcase %}
+  {% if opt == 'color' %}
+    {% assign index = forloop.index0 %}
+    {% assign colorlist = '' %}
+    {% assign color = '' %}
+    {% assign has_color = true %}
+
+    <ul class="color-swatch">
+      {% for variant in product.variants %}
+
+        {% if group != blank %}
+          {% assign _group = variant.metafields.c_f.color_group %}
+          {% unless _group == group %}
+            {% continue %}
+          {% endunless %}
+        {% endif %}
+
+        {%- assign color = variant.options[index] | downcase -%}
+        {% unless colorlist contains color %}
+            {% assign imagelist = '' %}
+
+            {% for image in product.images %}
+              {%- assign image_alt = image.alt | downcase | split: ',' -%}
+              {%- assign color_alt = image_alt[1] | strip -%}
+
+              {% if color_alt == color %}
+                {%- assign variant_image = image.src | img_url: grid_image_width, scale: grid_image_scale -%}
+                {%- assign imagelist = imagelist | append: variant_image | append: '<>' -%}
+              {% endif %}
+            {% endfor %}
+
+            {% assign imagelist = imagelist | split: '<>' %}
+
+            {%- assign image_front = product.featured_image.src | img_url: grid_image_width, scale: grid_image_scale -%}
+
+            {% if imagelist[0] %}
+              {%- assign image_front = imagelist[0] -%}
+            {% endif %}
+
+            <li class="color-swatch__wrapper">
+              <a href="#"
+                 class="js-color-swatch color-swatch__link"
+                 data-image="{{ image_front }}"
+                 data-variant-id="{{ variant.id }}">
+                <span class="color-swatch__item"
+                      style="background-color: {{ color | downcase | split: ' ' | last | handle  }};
+                             background-image: url({{ color | handle | append: '.' | append: file_extension | asset_url }});
+                             background-size: contain;"></span>
+              </a>
+            </li>
+          {% assign tempList = colorlist | append: color | append: '<>' %}
+          {% assign colorlist = tempList %}
+        {% endunless %}
+      {% endfor %}
+    </ul>
+
+  {% endif %}
+{% endfor %}

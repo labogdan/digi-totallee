@@ -1,0 +1,165 @@
+{% comment %}
+  - Determine whether to use default upsell or alt upsell
+{% endcomment %}
+{% assign s = 'upsell' %}
+
+{% if settings.upsell_alt %}
+  {% assign p_alt = settings.upsell_alt_for | split: ',' %}
+  {% for item in cart.items %}
+    {% assign i_handle = item.product.handle %}
+    {% for pp in p_alt %}
+      {% assign p_handle = pp | strip %}
+      {% if p_handle == i_handle %}
+        {% assign s = 'upsell_alt' %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}
+
+{% assign upsell_product = s | append: '_product' %}
+{% assign product = all_products[settings[upsell_product]] %}
+
+{% assign u_image = s | append: '_image' %}
+{% assign upsell_image = settings[u_image] %}
+
+{% assign shipping_threshold = settings.free_shipping_min | plus: 0 %}
+
+{% assign has_upsell_product = false %}
+{% for item in cart.items %}
+  {% if item.product_id == product.id %}
+    {% assign has_upsell_product = true %}
+  {% endif %}
+{% endfor %}
+
+{%- assign headings = 'how about an extra long charging cable?<>all orders over $30 ship free' | split: '<>' -%}
+{%- assign subheadings = 'charge your iPhone anywhere with this 1.5m chord' | split: '<>' -%}
+
+{%- assign heading = headings[0] -%}
+{%- assign subheading = subheadings[0] -%}
+{%- assign btn_label = 'Skip' -%}
+
+{%- assign current_variant = product.variants[0] -%}
+{% assign cable_image = current_variant.featured_image %}
+{% if cable_image == blank %}
+  {% assign cable_image = product.featured_image %}
+{% endif %}
+
+{% capture heading %}
+  <div>
+    <h3 class="section-subheading">buy another case and</h3>
+    <h1 class="section-heading">get a <span class="color-accent">free</span> charger cable</h1>
+  </div>
+{% endcapture %}
+{% assign subheading = blank %}
+
+<div class="contrast-bg">
+  <div class="page-width">
+    <div class="section-header text-center">
+      {{ heading }}
+      {% if subheading != blank or remaining != blank %}
+        <p class="section-subtext">
+          {{ subheading }}
+          {% if remaining != blank %}
+            (you're {{ remaining }} away)
+          {% endif %}
+        </p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% assign exclusions = 'ACCESSORIES' %}
+
+
+{% assign cart_product = blank %}
+{% assign partial_handle = blank %}
+{% assign size = blank %}
+{% assign product = blank %}
+{% assign cart_product = blank %}
+
+
+<div class="product-template__container page-width" itemscope itemtype="http://schema.org/Product" id="ProductSection-upsell" data-section-id="upsell" data-section-type="product" data-enable-history-state="false">
+  <div class="upsell-content">
+    <div class="page-width text-center">
+      <div class="showcase-container">
+        <div class="upsell-grid">
+
+          {% for item in cart.items %}
+            {% assign product_type = item.product.type | upcase %}
+            {% include 'get-case-size' with item.sku %}
+            {% if product_type == 'CASE'  %}
+              {% comment %}{% assign cart_product = item.product %}{% endcomment %}
+              {% comment %}{- Returns 'size' -}{% endcomment %}
+              {% include 'get-case-size' with item.sku %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          {% if cart_product == blank %}
+            {% assign h = 'thin-iphone-' | append: size | append: '-case' %}
+            {% assign cart_product = all_products[h] %}
+          {% endif %}
+
+          {% if product == blank %}
+            {% assign product = cart_product %}
+          {% endif %}
+
+          <div class="upsell-item">
+            <div class="showcase">
+              <div class="showcase__image-wrap">
+                <img src="{{ product.featured_image | img_url: '800x' }}" alt="{{ product.title }}" id="FeaturedImage-upsell">
+              </div>
+
+              <div class="showcase__text-wrap">
+                <p class="product-price lead h3">
+                  {% include 'product-price' %}
+                </p>
+              </div>
+            </div>
+
+            {% include 'upsell-product-form' %}
+          </div>
+
+          <div class="upsell-item upsell-plus"><h1>{% include 'svg' with 'plus' %}</h1></div>
+
+          <div class="upsell-item">
+            <div class="showcase js-showcase" data-id="{{ current_variant.id }}">
+              <div class="showcase__image-wrap">
+                <img src="{{ cable_image | img_url: '300x' }}" alt="{{ product.title }}">
+              </div>
+              <div class="showcase__text-wrap">
+                <h2 class="product-name upsell-skew">
+                  FREE
+                </h2>
+                <p class="product-subtext">($15 value)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" name="add" id="AddToCart-upsell" class="btn btn--cta product-form__cart-submit btn--full js-upsell-atc">
+              <span id="AddToCartText-upsell">
+                {% unless current_variant.available %}
+                  {{ 'products.product.sold_out' | t }}
+                {% else %}
+                  {{ 'products.product.add_to_cart' | t }}
+                {% endunless %}
+              </span>
+            </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="upsell-footer">
+  <a href="/checkout" class="btn btn--cta">{{ btn_label }}</a>
+</div>
+
+<script type="application/json" id="ProductJson-upsell">
+  {{ product | json }}
+</script>

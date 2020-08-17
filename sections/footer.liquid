@@ -1,0 +1,164 @@
+{%- assign social_icons = false -%}
+{% if
+  settings.social_twitter_link != blank
+  or settings.social_facebook_link != blank
+  or settings.social_pinterest_link != blank
+  or settings.social_instagram_link != blank
+  or settings.social_tumblr_link != blank
+  or settings.social_snapchat_link != blank
+  or settings.social_youtube_link != blank
+  or settings.social_vimeo_link != blank
+%}
+  {%- assign social_icons = true -%}
+{% endif %}
+
+{%- capture main_linklist -%}
+  {%- assign footer_linklist = section.settings.footer_linklist -%}
+  {% if linklists[footer_linklist].links.size > 0 %}
+    <ul class="site-footer__linklist{% unless section.settings.footer_newsletter_enable %} site-footer__linklist--center{% endunless %}">
+      {% for link in linklists[footer_linklist].links %}
+        <li class="site-footer__linklist-item">
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{%- endcapture -%}
+
+{%- capture secondary_linklist -%}
+  {%- assign footer_linklist = section.settings.footer_linklist_two -%}
+  {% if linklists[footer_linklist].links.size > 0 %}
+    <ul class="site-footer__linklist{% unless section.settings.footer_newsletter_enable %} site-footer__linklist--center{% endunless %}">
+      {% for link in linklists[footer_linklist].links %}
+        <li class="site-footer__linklist-item">
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{%- endcapture -%}
+
+{%- capture social_linklist -%}
+  {%- assign footer_linklist = section.settings.footer_linklist_contact -%}
+  {% if linklists[footer_linklist].links.size > 0 %}
+    <ul class="site-footer__linklist{% unless section.settings.footer_newsletter_enable %} site-footer__linklist--center{% endunless %}">
+      {% if section.settings.logo != blank %}
+          <li class="site-footer__logo">
+            <a href="/">
+              <img src="{{ section.settings.logo | img_url: '300x' }}"
+                  alt="{{ section.settings.logo.alt | default: shop.name }}">
+            </a>
+          </li>
+      {% endif %}
+      {% for link in linklists[footer_linklist].links %}
+        <li class="site-footer__linklist-item">
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+      {% include 'footer-social' %}
+    </ul>
+  {% endif %}
+{%- endcapture -%}
+
+<footer class="site-footer border-top" role="contentinfo">
+  <div class="full-container">
+    <div class="grid">
+
+      {% if social_linklist != blank %}
+        <div class="grid__item medium-up--one-fifth small--hide">
+          {{ social_linklist }}
+        </div>
+      {% endif %}
+
+      {% if main_linklist != blank %}
+        <div class="grid__item medium-up--one-fifth">
+          <h5 class="site-footer__linklist-title">{{ section.settings.footer_linklist_title }}</h5>
+          {{ main_linklist }}
+        </div>
+      {% endif %}
+
+      {% if secondary_linklist != blank %}
+        <div class="grid__item medium-up--one-fifth small--hide">
+          <h5 class="site-footer__linklist-title">{{ section.settings.footer_linklist_two_title }}</h5>
+          {{ secondary_linklist }}
+        </div>
+        <div class="grid__item medium-up--hide">
+          <div class="accordion site-footer__accordion">
+            <a href="#" class="js-accordion-toggle">
+              <span class="accordion-toggle__text">{{ section.settings.footer_linklist_two_title }}</span>
+              <span class="accordion-toggle__svg">
+                {% include 'svg' with 'plus' %}
+                {% include 'svg' with 'minus' %}
+              </span>
+            </a>
+            <div class="accordion__content js-accordion-content">
+              <div class="accordion__inner">
+                {{ secondary_linklist }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endif %}
+
+      {% if social_linklist != blank %}
+        <div class="grid__item medium-up--one-fifth medium-up--hide">
+          {{ social_linklist }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "text",
+        "id": "footer_linklist_title",
+        "label": "Title"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_linklist",
+        "label": "Primary menu",
+        "default": "footer"
+      },
+      {
+        "type": "text",
+        "id": "footer_linklist_two_title",
+        "label": "Title"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_linklist_two",
+        "label": "Additional menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_linklist_contact",
+        "label": "Contact linklist"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_newsletter_enable",
+        "label": "Show newsletter signup",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

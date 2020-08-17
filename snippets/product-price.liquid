@@ -1,0 +1,55 @@
+{% if product-price != blank and product-price.price != blank %}
+  {% assign product = product-price %}
+{% endif %}
+
+<!-- snippet/product-price.liquid -->
+{% if product.title %}
+  {%- assign compare_at_price = product.compare_at_price -%}
+  {%- assign price = product.price -%}
+  {%- assign price_varies = product.price_varies -%}
+  {%- assign available = product.available -%}
+{% else %}
+  {%- assign compare_at_price = 1999 -%}
+  {%- assign price = 1999 -%}
+  {%- assign price_varies = false -%}
+  {%- assign available = true -%}
+{% endif %}
+
+{% if variant %}
+  {% assign compare_at_price = variant.compare_at_price %}
+  {% assign price = variant.price %}
+  {% assign price_varies = false %}
+  {% assign available = variant.available %}
+{% endif %}
+
+{%- assign money_price = price | money_without_trailing_zeros -%}
+
+{% if compare_at_price > price %}
+  {% if price_varies %}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <s class="product-price__price">{{ compare_at_price | money_without_trailing_zeros }}</s>
+    <span class="product-price__price product-price__sale">
+      {{ money_price }}
+      <span class="product-price__sale-label">{{ 'products.product.on_sale' | t }}</span>
+    </span>
+  {% else %}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <s class="product-price__price">{{ compare_at_price | money_without_trailing_zeros }}</s>
+    <span class="product-price__price product-price__sale">
+      {{ money_price }}
+      <span class="product-price__sale-label">{{ 'products.product.on_sale' | t }}</span>
+    </span>
+  {% endif %}
+{% else %}
+
+  {% if price_varies %}
+    <span class="product-price__price">{{ money_price }}</span>
+  {% else %}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <span class="product-price__price">{{ money_price }}</span>
+  {% endif %}
+{% endif %}
+
+{% unless available %}
+  <span class="product-price__sold-out">{{ 'products.product.sold_out' | t }}</span>
+{% endunless %}

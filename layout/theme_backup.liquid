@@ -1,0 +1,275 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <!-- Start of totalleehelp Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=061ecf8a-577c-4136-bc74-48fe0661e2f2"> </script>
+<!-- End of totalleehelp Zendesk Widget script -->
+  
+<!-- Start Visual Website Optimizer Asynchronous Code -->
+<script type='text/javascript'>
+var _vwo_code=(function(){
+var account_id=341866,
+settings_tolerance=2000,
+library_tolerance=2500,
+use_existing_jquery=false,
+/* DO NOT EDIT BELOW THIS LINE */
+f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
+</script>
+<!-- End Visual Website Optimizer Asynchronous Code -->
+
+  {% if product.tags contains 'NO_INDEX' or template contains '404' %}
+    <meta name="robots" content="noindex,nofollow">
+  {% endif %}
+
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {% endif %}
+
+  {% capture seo_title %}
+    {{ page_title }}
+    {% if current_tags %}
+      {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {% endif %}
+    {% if current_page != 1 %}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {% endif %}
+    {% unless page_title contains shop.name %}
+      &ndash; {{ shop.name }}
+    {% endunless %}
+  {% endcapture %}
+  <title>{{ seo_title }}</title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+
+  {% include 'social-meta-tags' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'totallee.scss.css' | asset_url | stylesheet_tag }}
+  {% include 'google-fonts' %}
+
+  {% capture chevron_left %}{% include 'svg' with 'chevron_left' %}{% endcapture %}
+  {% capture chevron_right %}{% include 'svg' with 'chevron_right' %}{% endcapture %}
+  {% capture play_arrow %}{% include 'svg' with 'play-arrow' %}{% endcapture %}
+
+  {% capture money_format %}{% raw %}<span class=money>${{amount_no_decimals}}</span>{% endraw %}{% endcapture %}
+
+  <script>
+    var totallee = totallee || {}
+    var theme = theme || {}
+
+    totallee.metafieldsById = {}
+    totallee.addonsBySize = {}
+    totallee.productEntity = {}
+    totallee.upsell = {}
+
+    theme.strings = {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      showMore: {{ 'general.filters.show_more' | t | json }},
+      showLess: {{ 'general.filters.show_less' | t | json }},
+      cartEmpty: {{ 'cart.general.empty' | t | json }},
+    }
+    theme.moneyFormat = {{ money_format | json }}
+    theme.assets = {
+      chevronLeft: {{ chevron_left | json }},
+      chevronRight: {{ chevron_right | json }},
+      playArrow: {{ play_arrow | json }},
+    }
+    theme.upsell = {
+      enable: {{ settings.upsell | json }},
+      page: {{ settings.upsell_page | json }},
+      id: {{ all_products[settings.upsell_product].id | json }},
+      variantId: {{ settings.upsell_variant_id | json }},
+    }
+    theme.cart = {{ cart | json }}
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+    {% for i in (1..20) %}
+      {% assign key = 'upsell_product_' | append: i | append: '_key' %}
+      {% assign a = 'upsell_product_' | append: i | append: '_a' %}
+      {% assign b = 'upsell_product_' | append: i | append: '_b' %}
+
+      {% if settings[a] != blank and settings[b] != blank and settings[key] != blank %}
+        totallee.upsell[ {{ settings[key] | downcase | json }} ] = [
+          {{ settings[a] | downcase | json }},
+          {{ settings[b] | downcase | json }}
+        ]
+      {% endif %}
+    {% endfor %}
+  </script>
+
+
+
+  <!--[if (lte IE 9) ]>{{ 'match-media.min.js' | asset_url | script_tag }}<![endif]-->
+
+  {% if template.directory == 'customers' %}
+    <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+    <!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
+  {% endif %}
+
+ 
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'ajax-cart.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'ajax-cart.js' | asset_url }}"></script><![endif]-->
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'theme.js' | asset_url }}"></script><![endif]-->
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'totallee.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'totallee.js' | asset_url }}"></script><![endif]-->
+
+  {{ content_for_header }}
+
+<script type="text/javascript">
+!function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+
+pintrk('load','2617238352199');
+pintrk('page');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?tid=2617238352199&noscript=1" />
+</noscript>
+<meta name="ahrefs-site-verification" content="c8694cabec79477a0a4408e4ced50eafcc823af59a80119f3b0aa91d8c70bc64">
+{{ 'ba-po-common.scss' | asset_url | stylesheet_tag }}
+
+  
+</head>
+
+{% capture page_template %}template-{{ template | split: '.' | first }}{% endcapture %}
+{% capture page_template_modifier %}{{ page_template }}--{{ template | split: '.' | last }}{% endcapture %}
+<body class="{{ page_template }} {{ page_template_modifier }}{% if template contains 'product' %} {{ product.type }}{% endif %}">
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  <div id="SearchDrawer" class="search-bar drawer drawer--top">
+    <div class="search-bar__table">
+      <div class="search-bar__table-cell search-bar__form-wrapper">
+        <form class="search search-bar__form" action="/search" method="get" role="search">
+          <button class="search-bar__submit search__submit btn--link" type="submit">
+            {% include 'icon-search' %}
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+          <input class="search__input search-bar__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+        </form>
+      </div>
+      <div class="search-bar__table-cell text-right">
+        <button type="button" class="btn--link search-bar__close js-drawer-close">
+          {% include 'icon-close' %}
+          <span class="icon__fallback-text">{{ 'general.search.close' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% section 'ajax-cart' %}
+  {% section 'header' %}
+
+  <div class="page-container" id="PageContainer">
+
+    <main class="main-content" id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+  </div>
+
+  {% include 'ajax-cart-template' %}
+
+  {% if cart.items != blank %}
+    {% assign prod = blank %}
+    {% for item in cart.items %}
+      {% assign prod = item.product %}
+      {% break %}
+    {% endfor %}
+
+    {% include 'product-variables' product: prod %}
+    {% include 'product-mapping-scripts', product: prod, size_list: size_list, avail_sizes: avail_sizes, brand: brand, is_cart: true %}
+  {% endif %}
+
+
+  <!-- This site is converting visitors into subscribers and customers with OptinMonster - https://optinmonster.com --><script>var om44507_38823,om44507_38823_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){om44507_38823_poll(function(){if(window['om_loaded']){if(!om44507_38823){om44507_38823=new OptinMonsterApp();return om44507_38823.init({"a":38823,"staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="https://a.optnmstr.com/app/js/api.min.js",o.async=true,o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;om44507_38823=new OptinMonsterApp();om44507_38823.init({"a":38823,"staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script><!-- / OptinMonster -->
+<script type="text/javascript">
+    $("input[name='contact[email]']").on('blur', function(e) {
+        e.preventDefault();
+        var email = $(this).val();
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://manage.kmail-lists.com/subscriptions/external/subscribe",
+            "method": "POST",
+            "headers": {
+                "content-type": "application/x-www-form-urlencoded",
+                "cache-control": "no-cache"
+            },
+            "data": {
+                "g": "nm6fjP",
+                "$fields": "$source",
+                "email": email,
+                "$source": "Shopify form"
+            }
+        };
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    });
+</script>
+
+    <script async type="text/javascript" id="stamped-script-widget" data-api-key="pubkey-17L113O8aT4zdP5O12tAkL2j7g3x9h" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
+    {% include 'preorder-now' %}
+
+    <script>
+      var _learnq = _learnq || [];
+      _learnq.push(['account', 'qn79HgY']);
+      (function () {
+      var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+      b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+      var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+      })();
+    </script>
+    <script type="text/javascript">
+      var _learnq = _learnq || [];
+
+      _learnq.push(['account', 'qn79Hg']);
+
+      (function () {
+      var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+      b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+      var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+      })();
+    </script>
+
+  <script
+  async type="text/javascript"
+  src="//static.klaviyo.com/onsite/js/klaviyo.js?company_id=qn79Hg"
+></script>
+<!-- Twitter universal website tag code -->
+<script>
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+// Insert Twitter Pixel ID and Standard Event data below
+twq('init','nv0aq');
+twq('track','PageView');
+</script>
+<!-- End Twitter universal website tag code -->  
+  {% comment %}This is for Product Option App by hulkapps{% endcomment %}{% include 'hulkcode_common' %}</body>
+</html>
+

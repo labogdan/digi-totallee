@@ -1,0 +1,77 @@
+<style>
+  {% case block.settings.grid %}
+  {% when '2' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 530px;
+    }
+  {% when '3' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 345px;
+    }
+  {% when '4' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 250px;
+    }
+  {% when '5' %}
+    .grid__item--{{section.id}} .grid-view-item__image {
+      max-height: 195px;
+    }
+  {% endcase %}
+</style>
+<div class="pdp-related">
+<div class="page-width">
+  {% if block.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ block.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {%- assign collection = collections[block.settings.collection] -%}
+
+  {% case block.settings.grid %}
+    {% when '2' %}
+      {%- assign grid_item_width = 'medium-up--one-half' -%}
+      {%- assign image_size = '530x530' -%}
+    {% when '3' %}
+      {%- assign grid_item_width = 'medium-up--one-third' -%}
+      {%- assign image_size = '345x345' -%}
+    {% when '4' %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+      {%- assign image_size = '250x250' -%}
+    {% when '5' %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
+      {%- assign image_size = '195x195' -%}
+  {% endcase %}
+
+  {%- assign product_limit = block.settings.grid | times: block.settings.rows -%}
+
+  <div class="grid grid--uniform grid--view-items">
+    {% for product in collection.products limit: product_limit %}
+      <div class="grid__item grid__item--{{section.id}} {{ grid_item_width }}">
+        {% include 'product-card-related', grid_image_width: image_size %}
+      </div>
+    {% else %}
+
+      {% for i in (1..product_limit) %}
+        <div class="grid__item .grid__item--{{section.id}} {{ grid_item_width }}">
+          <div class="grid-view-item">
+            <a href="#" class="grid-view-item__link">
+              <div class="grid-view-item__image">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+              <div class="grid-view-item__meta">
+                {% include 'product-price' %}
+              </div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+
+
+</div>
+</div>

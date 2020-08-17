@@ -1,0 +1,80 @@
+{% comment %}{- Returns variable size_list - type:list -}{% endcomment %}
+{% if product.handle contains 'iphone' %}
+  {% assign brand = 'iphone' %}
+  {% assign size_list =
+    '
+    X,
+    8-plus,
+    8,
+    7-plus,
+    7,
+    6-plus,
+    6
+    '
+   %}
+{% elsif product.handle contains 'galaxy' %}
+  {% assign brand = 'galaxy' %}
+  {% assign size_list =
+    '
+    note8,
+    s8-plus,
+    s8,
+    s9-plus,
+    s9
+    '
+   %}
+{% elsif product.handle contains 'pixel' %}
+  {% assign brand = 'pixel' %}
+  {% assign size_list =
+    '
+    2,
+    2-xl
+    '
+   %}
+{% endif %}
+
+{% assign size_list = size_list | strip_newlines | remove: ' ' | split: ',' %}
+
+{% comment %}{- Returns variable avail_sizes - type:list -}{% endcomment %}
+{% assign avail_sizes = '' %}
+
+{% if product.type contains 'case' %}
+  {% for size in size_list %}
+    {% assign handle = head | append: '-' | append: brand | append: '-' | append: size | append: '-case' | handleize %}
+
+    {% assign prod = all_products[handle] %}
+    {% if prod != blank %}
+      {% assign avail_sizes = avail_sizes | append: prod.handle | append: '<>' %}
+    {% endif %}
+  {% endfor %}
+
+{% elsif product.type contains 'screen protector' %}
+  {% for size in size_list %}
+    {% assign handle = brand | append: '-' | append: size | append: '-screen-protector' | handleize %}
+    {% assign prod = all_products[handle] %}
+    {% if prod != blank %}
+      {% assign avail_sizes = avail_sizes | append: prod.handle | append: '<>' %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign avail_sizes = avail_sizes | split: '<>' %}
+
+{% comment %}
+  add_on_handle - type:string
+  add_on_product - type:Product
+{% endcomment %}
+{% assign case_size = product.metafields.case.size | handleize %}
+
+{% assign add_on_handle = brand | append: '-' | append: case_size | append: '-screen-protector' %}
+{% assign add_on_product = all_products[add_on_handle] %}
+
+{% if add_on_product == blank %}
+  {% assign add_on_handle = current_variant.option1 | handle | append: '-screen-protector' %}
+  {% assign add_on_product = all_products[add_on_handle] %}
+{% endif %}
+
+{% if add_on_product == blank %}
+  {% assign add_on_handle = current_variant.option2 | handle | append: '-screen-protector' %}
+  {% assign add_on_product = all_products[add_on_handle] %}
+{% endif %}

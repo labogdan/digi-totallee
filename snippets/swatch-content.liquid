@@ -1,0 +1,57 @@
+{% assign value = variant.options[option_index] %}
+
+{% if names != blank %}
+  {% assign names = names | upcase %}
+  {% assign normalized_value = value | upcase %}
+  {% unless names contains normalized_value %}
+    {% continue %}
+  {% endunless %}
+{% endif %}
+
+{% unless values contains value %}
+  {% assign values = values | join: ',' %}
+  {% assign values = values | append: ',' | append: value %}
+  {% assign values = values | split: ',' %}
+  {% comment %}
+  {%- capture additional_names -%}
+    {% if variant.available %}available{% else %}soldout{% endif %}
+  {%- endcapture -%}
+  {% endcomment %}
+  <div data-value="{{ value | escape }}" class="swatch-element {% if is_color %}color {% endif %}{{ value | handle }} {{ additional_names }}">
+
+    {% if section.settings.swatch_tag_enable and variant.metafields.c_f.swatch_tag != blank %}
+      {% assign img_width = section.settings.swatch_tag_width | append: 'x' %}
+      <div class="swatch-tag" style="width:{{ section.settings.swatch_tag_width | append: 'px' }};">
+        {% if section.settings.swatch_tag_image_mobile != blank %}
+          <img src="//cdn.shopify.com/s/files/1/1166/1584/files/best.jpg?8536812801226340226"
+               alt="{{ section.settings.swatch_tag_image.alt }}"
+               class="small--hide">
+          <img src="https://cdn.shopify.com/s/files/1/1166/1584/files/best-mobile.jpg?9638814606652689235"
+               alt="{{ section.settings.swatch_tag_image.alt }}"
+               class="medium-up--hide">
+        {% else %}
+          <img src="{{ section.settings.swatch_tag_image | img_url: img_width }}"
+               alt="{{ section.settings.swatch_tag_image.alt }}">
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <input id="swatch-{{ option_index }}-{{ value | handle }}" type="radio" name="option-{{ option_index }}" value="{{ value | escape }}"{% if forloop.first %} checked{% endif %} data-group="{{ swatch-content }}" />
+    {% if is_color %}
+      <div class="swatch-color clearfix">
+        <label for="swatch-{{ option_index }}-{{ value | handle }}" style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }}); background-size: contain;">
+        </label>
+      </div>
+    {% else %}
+    <label for="swatch-{{ option_index }}-{{ value | handle }}">
+      {{ value }}
+      <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+    </label>
+    {% endif %}
+  </div>
+{% endunless %}
+{% if variant.available %}
+<script>
+  jQuery('.swatch[data-option-index="{{ option_index }}"] .{{ value | handle }}').removeClass('soldout').addClass('available').find(':radio').removeAttr('disabled');
+</script>
+{% endif %}

@@ -1,0 +1,139 @@
+{% assign has_mobile_title = false %}
+{% assign has_mobile_desc = false %}
+
+{% if section.settings.enable_mobile_view %}
+  {% if section.settings.mobile_title != blank %}
+    {% assign has_mobile_title = true %}
+  {% endif %}
+
+  {% if section.settings.mobile_desc != blank %}
+    {% assign has_mobile_desc = true %}
+  {% endif %}
+{% endif %}
+
+<div class="page-width">
+  {% if section.settings.title != blank or has_mobile_title %}
+    <div class="section-header text-center">
+      {% if section.settings.title != blank %}
+        <h3 class="h1{% if has_mobile_title %} small--hide{% endif %}">
+          {{ section.settings.title | escape }}
+        </h3>
+      {% endif %}
+
+      {% if has_mobile_title or has_mobile_desc %}
+        <div class="medium-up--hide">
+          {% if has_mobile_title %}
+            <h3 class="h1">{{ section.settings.mobile_title }}</h3>
+          {% endif %}
+          {% if has_mobile_desc %}
+            <p class="subheading">{{ section.settings.mobile_desc }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% assign desktop_blocks = '' %}
+  {% assign mobile_blocks = '' %}
+  {% for block in section.blocks %}
+    {% assign i = forloop.index0 %}
+    {% if block.type == 'featured_collection' %}
+      {% assign desktop_blocks = desktop_blocks | append: i | append: '<>' %}
+    {% endif %}
+  {% endfor %}
+  {% assign desktop_blocks = desktop_blocks | split: '<>' %}
+
+  {% assign b = section.blocks[1] %}
+
+  {% comment %}{- Desktop -}{% endcomment %}
+  <div class="list-block">
+    {% for i in desktop_blocks %}
+      {% assign j = i | plus: 0 %}
+      {% assign block = section.blocks[j] %}
+
+      {% assign mod = forloop.index0 | modulo: 3 %}
+
+      {% if forloop.first %}
+        <div class="list-block__row">
+      {% elsif mod == 0 %}
+        </div>
+        <div class="list-block__row">
+      {% endif %}
+
+        <div class="list-block__col small--one-whole">
+          <div class="list-block__card">
+            <a href="{{ block.settings.link }}" class="list-block__box">
+              <p class="list-block__box-title small--hide">{{ block.settings.title }}</p>
+              <ul class="list-block__contents">
+                {% assign desktop_items = block.settings.desktop_desc | split: '<br>' %}
+
+                {% for item in desktop_items %}
+                  <li class="list-block__content{% if has_mobile_item %} small--hide{% endif %}">
+                    <h2 class="list-block__content-subtext">{{ item }}</h2>
+                  </li>
+                {% endfor %}
+
+              </ul>
+            </a>
+          </div>
+        </div>
+      {% if forloop.last %}</div>{% endif %}
+
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "index-section shop-by-size contrast-bg",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "link",
+            "id": "link",
+            "type": "text"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "title",
+            "info": "Hidden on mobile"
+          },
+          {
+            "type": "textarea",
+            "id": "desktop_desc",
+            "label": "Desktop view description",
+            "info": "Use <br> for linebreaks"
+          },
+          {
+            "type": "textarea",
+            "id": "mobile_desc",
+            "label": "Mobile view description",
+            "info": "Leave blank to use desktop view; will not be visible if alt views are active"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "settings": {},
+        "blocks": []
+      }
+    ]
+  }
+{% endschema %}

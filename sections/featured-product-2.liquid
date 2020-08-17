@@ -1,0 +1,89 @@
+<div class="page-width text-center">
+  <header class="section-header">
+    <h1 class="section-heading h2 js-buddy" data-buddy-count="2">{{ section.settings.heading }}</h1>
+    <p class="section-subtext">{{ section.settings.subtext }}</p>
+  </header>
+
+  <div class="showcase-container">
+    <div class="grid">
+      {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product] %}
+        <div class="grid__item medium-up--one-half">
+          <div class="showcase">
+            <div class="showcase__image-wrap">
+              <a href="{{ product.url }}" class="no-hover js-swatch-link">
+                <img src="{{ product.featured_image | img_url: '1024x' }}" alt="{{ product.title }}" class="js-image-swap">
+              </a>
+            </div>
+            <h2 class="product-name lead">
+              {% if block.settings.price != blank %}
+                <span class="product-price">{{ block.settings.price }}</span>
+              {% endif %}
+              {{ block.settings.name }}
+            </h2>
+            {% include 'color-swatch' %}
+            <div class="product-btn-wrap">
+              <a href="{{ product.url }}" class="js-swatch-link btn btn--cta showcase__btn">{{ block.settings.btn_label }}</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Featured product 2",
+    "class": "index-section index-section--featured-product-2",
+    "max_blocks": 2,
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Section heading"
+      },
+      {
+        "type": "textarea",
+        "id": "subtext",
+        "label": "Section subtext"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_product",
+        "name": "Featured product",
+        "settings": [
+          {
+            "type": "product",
+            "label": "Product",
+            "id": "product"
+          },
+          {
+            "type": "text",
+            "id": "price",
+            "label": "Product price",
+            "info": "Optional"
+          },
+          {
+            "type": "textarea",
+            "id": "name",
+            "label": "Product name",
+            "info": "Leave blank to use default name"
+          },
+          {
+            "type": "text",
+            "label": "Button label",
+            "id": "btn_label"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured product 2",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

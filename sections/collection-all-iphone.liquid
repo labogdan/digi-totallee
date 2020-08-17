@@ -1,0 +1,119 @@
+{% include 'collection-all-template' %}
+{% schema %}
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "textarea",
+        "id": "subtext",
+        "label": "Subtext"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Show collection image",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image desktop"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image mobile"
+      },
+      {
+        "type": "select",
+        "id": "banner_size",
+        "label": "Banner height",
+        "default": "medium",
+        "options": [
+          {
+            "label": "Extra Small",
+            "value": "x-small"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          },
+          {
+            "label": "Full screen",
+            "value": "full-screen"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "2",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "collection"
+          },
+          {
+            "type": "text",
+            "id": "collection_title",
+            "label": "Title",
+            "info": "Leave blank to use default"
+          },
+          {
+            "type": "text",
+            "id": "secondary_link_label",
+            "label": "Secondary link label",
+            "default": "learn more"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

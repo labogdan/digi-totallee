@@ -1,0 +1,11 @@
+{% if desktop != blank and mobile != blank %}
+  <picture>
+    <source media="(min-width: 750px)" srcset="{{ desktop | img_url: '2400x' }}">
+    <source media="(max-width: 749px)" srcset="{{ mobile | img_url: '2400x' }}">
+    <img src="{{ desktop | img_url: '2400x' }}" alt="{{ desktop.alt }}" class="{{ classname }}">
+  </picture>
+{% elsif desktop != blank %}
+  <img src="{{ desktop | img_url: '2400x' }}" alt="{{ desktop.alt }}" class="{{ classname }}">
+{% elsif mobile != blank %}
+  <img src="{{ mobile | img_url: '2400x' }}" alt="{{ mobile.alt }}" class="{{ classname }}">
+{% endif %}
