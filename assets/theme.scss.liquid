@@ -6051,32 +6051,28 @@ color: #FAA916 !important; /* change color */
 .stamped-container {border-top: 1px solid #eee !important;}
 
 
+.shop-by-size-included-in-div {
+  font-size: 18px;
+  font-weight: bold;
+  padding-top: 7px;
+}
+
 
 
 .shop-by-size {
+  display: none;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: -32px;
-  margin-left: -32px;
+  margin-left: -62px;
 }
 @media only screen and (max-width: 1211px) {
   .shop-by-size {
-    margin-bottom: 10px;
-    margin-left: 16px;
+    //margin-bottom: 10px;
+    //margin-left: 16px;
   }
 }
 
-.shop-by-size:after {
-  content: '\22C1';
-  font-size: 22px;
-  color: #777;
-  float: right;
-  margin-left: 5px;
-}
-
-.active:after {
-    content: "\22C0";
-}
 
 .shop-by-size:after {
   display: none;
@@ -6089,6 +6085,8 @@ color: #FAA916 !important; /* change color */
 
 /* Desktop View */
 .text-center-responsive-d {
+    max-width: 700px;
+    margin: 0 auto;
     text-align: center;
     display: flex;
     //flex-wrap: wrap;
@@ -6099,7 +6097,16 @@ color: #FAA916 !important; /* change color */
   //width: 49%;
 }
 
-@media only screen and (max-width: 577px) {
+$breakpoint-mobile-collection: 650px;
+
+
+@media only screen and (max-width: $breakpoint-mobile-collection) {
+
+  .shop-by-size {
+    margin-left: 0;
+    display: block;
+    margin-bottom: 4px;
+  }
   .shop-by-size:after {
     display: block;
   }
@@ -6122,6 +6129,9 @@ color: #FAA916 !important; /* change color */
     display: flex;
     //flex-wrap: wrap;
     //justify-content: space-evenly;
+    max-height: 0;
+    transition: max-height 0.5s ease-in;
+    overflow: hidden;
 }
 
 .txt-flex-m {
@@ -6137,10 +6147,11 @@ color: #FAA916 !important; /* change color */
 }
 
 
-@media only screen and (min-width: 577px) {
+@media only screen and (min-width: $breakpoint-mobile-collection) {
 
   .text-center-responsive-m {
-    display: none;
+    //display: none;
+    max-height: 0;
   }
   .column-m {
     display: none;
@@ -6178,7 +6189,20 @@ color: #FAA916 !important; /* change color */
   margin-bottom: 40px;
 }
 
-@media only screen and (max-width: $grid-medium) {
+.fright.fas {
+  float: right;
+  display: none;
+}
+
+
+@media only screen and (max-width: $breakpoint-mobile-collection) {
+  .fright.fas {
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-mobile-collection) {
+
   .collection-hero__callout-image {
     display: none;
   }
@@ -6188,6 +6212,8 @@ color: #FAA916 !important; /* change color */
   .hero--small {
     margin-bottom: 20px;
   }
+}
 
-
+.show-it {
+  max-height: 500px;
 }

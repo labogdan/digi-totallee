@@ -1,3 +1,5 @@
+{%- assign which_page = collection.id -%}
+
 <div class="collection-all-template">
   <style>
     {% case section.settings.grid %}
@@ -38,41 +40,64 @@
   {% include 'collection-banner', title: section.settings.title, description: section.settings.subtext, image: section.settings.image_desktop, image_mobile: section.settings.image_mobile %}
 
   <section class="page-width">
-    <div class="shop-by-size" onclick="toggleSection()"><span>Shop by size</span></div>
+    <div class="shop-by-size" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
 
-    <div class="text-center-responsive-d">
-    {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
-    {% assign total = 0 %}
-    {% for block in section.blocks %}
-      {%- assign collection = collections[block.settings.collection_handle] -%}
-      {% assign has_group = false %}
-          <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
-          {% assign total = total | plus: 1 %}
-    {% endfor %}
+{% if which_page == 14705786909 %}
+  <div class="text-center-responsive-d">
+        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488796222')">iPhone 11 Pro Max</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488927294')">iPhone 11 Pro</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104489287742')">iPhone 11</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-158049337406')">iPhone SE</button></div>
+  </div>
+
+  <div class="text-center-responsive-m">
+    <div class="txt-flex-m">
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488796222')">iPhone 11 Pro Max</button></div>
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488927294')">iPhone 11 Pro</button></div>
     </div>
-
-    {% assign totaldtwo = total | divided_by: 2 %}
-    {% assign totaldtwominusone = totaldtwo | minus: 1 %}
-    <div class="text-center-responsive-m hidden">
-    {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
-    {% assign counter = 0 %}
-    {% for block in section.blocks %}
-      {%- assign collection = collections[block.settings.collection_handle] -%}
-      {% assign has_group = false %}
-
-
-        {% if counter == 0 or counter == totaldtwo  %}
-          <div class="txt-flex-m">
-        {% endif %}
-          <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
-        {% if counter == totaldtwominusone or counter == total %}
-          </div>
-        {% endif %}
-      {% assign counter = counter | plus: 1 %}
-    {% endfor %}
-
-
+    <div class="txt-flex-m">
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104489287742')">iPhone 11</button></div>
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-158049337406')">iPhone SE</button></div>
     </div>
+  </div>
+{% endif %}
+
+{% if which_page == 14705983517 %}
+  <div class="text-center-responsive-d">
+        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862166590')">Galaxy S20 Ultra</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862133822')">Galaxy S20+</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862101054')">Galaxy S20</button></div>
+  </div>
+
+  <div class="text-center-responsive-m">
+    <div class="txt-flex-m">
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862166590')">Galaxy S20 Ultra</button></div>
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862133822')">Galaxy S20+</button></div>
+    </div>
+    <div class="txt-flex-m">
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862101054')">Galaxy S20</button></div>
+    </div>
+  </div>
+{% endif %}
+
+{% if which_page == 14705885213 %}
+  <div class="text-center-responsive-d">
+        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720689726')">Pixel 4 XL</button></div>
+        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720624190')">Pixel 4</button></div>
+  </div>
+
+  <div class="text-center-responsive-m">
+    <div class="txt-flex-m">
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720689726')">Pixel 4 XL</button></div>
+      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720624190')">Pixel 4</button></div>
+    </div>
+    <div class="txt-flex-m">
+    </div>
+  </div>
+{% endif %}
 
   </section>
   <hr class="hr--section-shopby">
@@ -157,12 +182,14 @@
   }
 
   function toggleSection () {
-  $(".shop-by-size").toggleClass('active')
-    $(".text-center-responsive-m").toggleClass('hidden')
+
+    var elem = $('#toggle');
+    if (elem.hasClass('fa-angle-up')) {
+      elem.removeClass('fa-angle-up').addClass('fa-angle-down');
+    } else {
+      elem.removeClass('fa-angle-down').addClass('fa-angle-up');
+    }
+    $(".text-center-responsive-m").toggleClass('show-it')
   }
-/*
-  $(document).ready(function () {
-    $(".text-center-responsive-m").toggle();
-  })*/
 
 </script>
