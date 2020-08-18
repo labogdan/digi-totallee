@@ -167,7 +167,7 @@ totallee.drawers = (function () {
       var minus = 5000;
       var total = parseFloat(minus - price) / 100;
       var total2 = total.toFixed(2);
-      var width = (price / minus) * 100;      
+      var width = (price / minus) * 100;
       $('.progress-bar').css('width', width+'%');
       if (cart.total_price < 5000) {
       	$('.cart-total-mot').html('$'+total2);
@@ -179,30 +179,30 @@ totallee.drawers = (function () {
       }
    $(document).ready(function(){
      $('.upsell-holder').empty();
-     
-var arrayx = [];        
+
+var arrayx = [];
 $.getJSON('/cart.js', function(cart) {
   for(var i=0; i<cart.items.length; i++){
     var item = cart.items[i];
     var itemid = item.handle;
     var itemvariant = item.variant_title;
     var itemtype = item.product_type
-    
-    arrayx.push(itemid + '-' + itemvariant);
- 
 
-   if (itemtype == 'case') { 
+    arrayx.push(itemid + '-' + itemvariant);
+
+
+   if (itemtype == 'case') {
 $.getJSON('/products/'+ itemid +'.js', function(data) {
   var producturl = data.url;
   var producttitle = data.title.toString().replace("Thin ", "");
 var i;
-var activev = []; 
+var activev = [];
 for (i = 0; i < arrayx.length; i++) {
 if (arrayx[i].indexOf(itemid) > -1) {
   activev += arrayx[i]+",";
 }
-}  
-  
+}
+
     var firstx = activev.split(',');
     var var1 = firstx[0].split(itemid+'-').toString().replace(",", "");
 
@@ -219,13 +219,13 @@ if (arrayx[i].indexOf(itemid) > -1) {
        }
        if (tag.indexOf('2-') > -1) {
           var second = tag.split('2-').toString().replace(",", "");
-       } 
+       }
        if (tag.indexOf('3-') > -1) {
           var third = tag.split('3-').toString().replace(",", "");
-       } 
+       }
        if (tag.indexOf('4-') > -1) {
           var fourth = tag.split('4-').toString().replace(",", "");
-       }        
+       }
   }
 
   for(var i=0; i<data.variants.length; i++){
@@ -239,28 +239,28 @@ if (arrayx[i].indexOf(itemid) > -1) {
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }  
+       }
     } else if (var1 != second && var2 != second && var3 != second && var4 != second) {
         if (vartitlex == second) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     } else if (var1 != third && var2 != third && var3 != third && var4 != third) {
         if (vartitlex == third) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     }  else if (var1 != fourth && var2 != fourth && var3 != itemvariant && var4 != fourth) {
         if (vartitlex == fourth) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     }
     } else if(typeof var3 != 'undefined') {
     if (var1 != first && var2 != first && var3 != first) {
@@ -269,29 +269,29 @@ if (arrayx[i].indexOf(itemid) > -1) {
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }  
+       }
     } else if (var1 != second && var2 != second && var3 != second) {
         if (vartitlex == second) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     } else if (var1 != third && var2 != third && var3 != third) {
         if (vartitlex == third) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     }  else if (var1 != fourth && var2 != fourth && var3 != fourth) {
         if (vartitlex == fourth) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
-    }    
+       }
+    }
     } else if(typeof var2 != 'undefined') {
     if (var1 != first && var2 != first) {
        if (vartitlex == first) {
@@ -299,29 +299,29 @@ if (arrayx[i].indexOf(itemid) > -1) {
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }  
+       }
     } else if (var1 != second && var2 != second) {
         if (vartitlex == second) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     } else if (var1 != third && var2 != third) {
         if (vartitlex == third) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     }  else if (var1 != fourth && var2 != fourth) {
         if (vartitlex == fourth) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
-    }     
+       }
+    }
     } else {
     if (var1 != first) {
        if (vartitlex == first) {
@@ -329,32 +329,32 @@ if (arrayx[i].indexOf(itemid) > -1) {
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }  
+       }
     } else if (var1 != second) {
         if (vartitlex == second) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     } else if (var1 != third) {
         if (vartitlex == third) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
+       }
     }  else if (var1 != fourth) {
         if (vartitlex == fourth) {
     	var varid = variant.id;
         var vartitle = variant.title;
         var vartitleh = variant.title.toLowerCase().replace(/ /g,'-');
         var varprice = variant.price
-       }     
-    }    
+       }
+    }
     }
 
-  }  
+  }
 
 for (var i = 0; i < data.images.length; i++) {
     var image = data.images[i];
@@ -367,14 +367,14 @@ for (var i = 0; i < data.images.length; i++) {
   var pricex = (varprice / 100).toFixed(2).replace(".00", "");
   var newdiv = $('<div class="'+ imagefile +' upsellcase var-' + varid +'"><div class="ajaxcart__product-wrapper"><div class="ajaxcart__product-image-wrapper"><img class="grid-view-item__image" src="' + imagex + '" /></div><div class="ajaxcart__product-right"><div class="ajaxcart__product-name"><a href="' + producturl + '"><span class="title">' + data.title + '</span></a><span class="ajaxcart__product-meta">' + vartitle + '</span></div><button class="btn" type="submit" name="add" data-cart-add="' + varid + '">Add <span class="divider">|</span> <span class="price">$' + pricex + '</span></button></div></div></div>');
   $('.upsell-holder').append(newdiv);
-  $(".var-" + varid).not(':last').hide(); 
+  $(".var-" + varid).not(':last').hide();
   }
-});  
-   } 
+});
+   }
   }
 
-}); 
-   });      
+});
+   });
     })
   }
 
@@ -481,10 +481,10 @@ totallee.ppVariants = (function () {
     var idxSize = utils.optionIndexOf(state, 'Size')
     var idxSelectSize = utils.optionIndexOf(state, 'select your size')
     var corrSizeIdx = idxSize === -1 ? idxSelectSize : idxSize
-    
+
     var idxQty = utils.optionIndexOf(state, 'Quantity')
     var idxSelectQty = utils.optionIndexOf(state, 'select your quantity')
-    var corrQtyIdx = idxQty === -1 ? idxSelectQty : idxQty       
+    var corrQtyIdx = idxQty === -1 ? idxSelectQty : idxQty
 
     cache = {
       $form: $('form[action="/cart/add"]'),
@@ -512,7 +512,7 @@ totallee.ppVariants = (function () {
 
     state.hasColorOption = normalizedOptions.indexOf('COLOR') !== -1
     state.hasQuantityOption = normalizedOptions.indexOf('QUANTITY') !== -1
-      || normalizedOptions.indexOf('SELECT YOUR QUANTITY') !== -1    
+      || normalizedOptions.indexOf('SELECT YOUR QUANTITY') !== -1
     state.hasSizeOption = normalizedOptions.indexOf('SIZE') !== -1
       || normalizedOptions.indexOf('SELECT YOUR SIZE') !== -1
 
@@ -520,10 +520,10 @@ totallee.ppVariants = (function () {
       var idxSize = utils.optionIndexOf(state, 'Size')
       var idxSelectSize = utils.optionIndexOf(state, 'select your size')
       var corrSizeIdx = idxSize === -1 ? idxSelectSize : idxSize
-      
+
       var idxQty = utils.optionIndexOf(state, 'Quantity')
       var idxSelectQty = utils.optionIndexOf(state, 'select your quantity')
-      var corrQtyIdx = idxQty === -1 ? idxSelectQty : idxQty      
+      var corrQtyIdx = idxQty === -1 ? idxSelectQty : idxQty
 
       $(document.body).trigger({
         type: 'totallee.variantChange',
@@ -566,9 +566,9 @@ totallee.ppVariants = (function () {
 
       var isSizeMatch = !state.hasSizeOption
                         || altList.indexOf(state.size) !== -1
-      
+
       var isQuantityMatch = !state.hasQuantityOption
-                        || altList.indexOf(state.quantity) !== -1      
+                        || altList.indexOf(state.quantity) !== -1
 
       // Image / Slider swap
       if (state.hasColorOption && state.hasSizeOption) {
@@ -599,9 +599,9 @@ totallee.ppVariants = (function () {
 
       var isSizeMatchBtf = !state.hasSizeOption
                             || btfList.indexOf(state.size) !== -1
-      
+
       var isQuantityMatchBtf = !state.hasQuantityOption
-                            || btfList.indexOf(state.quantity) !== -1      
+                            || btfList.indexOf(state.quantity) !== -1
 
       function doBtf() {
         var src = $img.attr('src').replace('_80x80', '')
@@ -714,7 +714,7 @@ totallee.ppVariants = (function () {
       }
 
       var $image = $(this).find('img').eq(0).detach()
-      var $anchor = $(this).find('a')         
+      var $anchor = $(this).find('a')
 
       if ($(this).hasClass('js-variant-video')) {
         if (!$(this).attr('data-video-src')) {
@@ -855,7 +855,7 @@ totallee.ppVariants = (function () {
     state = $.extend({}, state, { size: val.toLowerCase() })
     swapRoutine()
   }
-  
+
   function handleQuantityChange(_, _ref) {
     var $ref = _ref || $(this)
     var val = $ref.val() || ''
@@ -880,10 +880,10 @@ totallee.ppVariants = (function () {
     if (cache.$sizeOption.length) {
       handleSizeChange(null, cache.$sizeOption)
     }
-    
+
     if (cache.$quantityOption.length) {
       handleQuantityChange(null, cache.$quantityOption)
-    }    
+    }
 
     cache.$loading.hide()
     cache.$loadingContent.css({ visibility: 'visible', opacity: '1' })
@@ -964,6 +964,21 @@ totallee.ppForm = (function () {
 
   var cache = {}
 
+
+  var itemErrorCallback = function (XMLHttpRequest, textStatus) {
+    var data = eval('(' + XMLHttpRequest.responseText + ')');
+
+    if (!!data.message) {
+      if (data.status == 422) {
+        var $ele = $('.product-form__item--submit');
+
+        $ele.find('button').attr('disabled', true);
+        $ele.find('button').find('span').html('Sold Out');
+        $ele.after('<div class="errors qty-error">'+ data.description +'</div>');
+      }
+    }
+  };
+
   function cacheSelectors() {
     cache.$sizeSelector = $('.js-single-option-selector--size')
     cache.$checkBox = $('#totalleeAddOn')
@@ -999,8 +1014,12 @@ totallee.ppForm = (function () {
     cache.$form.off('submit').on('submit', function (e) {
       e.preventDefault()
 
+
+
+
+
       if (!state.isTotalleeChecked) {
-        ShopifyAPI.addItemFromForm(e.target, ajaxCart.load)
+        ShopifyAPI.addItemFromForm(e.target, ajaxCart.load, itemErrorCallback)
       } else {
         var updates = {}
         var serialized = cache.$form.serialize()

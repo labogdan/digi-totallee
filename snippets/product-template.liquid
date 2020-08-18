@@ -7,7 +7,7 @@
   {% endif %}
 
   <div class="shopbar js-shopbar">{% render 'preorder-now-collection-item', product: product %}
-              
+
     <div class="shopbar__inner">
       <span class="shopbar__logo">
         <span class="small--hide">{{ product.title }}</span> <span class="divider small--hide">|</span> {{ product.price | money | remove: '.00' }}
@@ -163,7 +163,7 @@
             </div>
           {% endif %}
 
-          
+
 
 
           {% if section.settings.show_vendor %}
@@ -201,7 +201,7 @@
                       </select>
                     </div>
                   </div>
-                  
+
                 {% endif %}
                 {% endcomment %}
 
@@ -334,7 +334,7 @@
                         </div>
                       </div>
                     {% endif %}
-                    
+
                     <div class="accordion">
                       <a href="#" class="js-accordion-toggle">
                         <span class="accordion-toggle__text">Shipping</span>
@@ -369,7 +369,7 @@
                               <li>- Due to COVID19 we are not shipping outside the U.S. and Canada</li>
                             </ul>
                           </div>
-                        
+
                         </div>
                       </div>
                     </div>
@@ -396,14 +396,14 @@
                       </div>
                     </div>
                     {% endunless %}
-                    
 
-                    
+
+
                   </div> {% comment %}{- END accordions -}{% endcomment %}
                 {% endif %}
-				
-              
-                
+
+
+
                 {% if section.settings.dd_show %}
                   <div class="pp-dd text-center">
                     <a href="{{ section.settings.dd_url }}" class="text-italic text-center lead-2 text-underline-2">{{ section.settings.dd_text }}</a>
