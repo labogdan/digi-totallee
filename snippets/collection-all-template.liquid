@@ -42,62 +42,76 @@
   <section class="page-width">
     <div class="shop-by-size" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
 
-{% if which_page == 14705786909 %}
-  <div class="text-center-responsive-d">
-        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488796222')">iPhone 11 Pro Max</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488927294')">iPhone 11 Pro</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104489287742')">iPhone 11</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-158049337406')">iPhone SE</button></div>
-  </div>
 
-  <div class="text-center-responsive-m">
-    <div class="txt-flex-m">
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488796222')">iPhone 11 Pro Max</button></div>
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104488927294')">iPhone 11 Pro</button></div>
-    </div>
-    <div class="txt-flex-m">
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-104489287742')">iPhone 11</button></div>
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-158049337406')">iPhone SE</button></div>
-    </div>
-  </div>
-{% endif %}
 
-{% if which_page == 14705983517 %}
-  <div class="text-center-responsive-d">
-        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862166590')">Galaxy S20 Ultra</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862133822')">Galaxy S20+</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862101054')">Galaxy S20</button></div>
-  </div>
 
-  <div class="text-center-responsive-m">
-    <div class="txt-flex-m">
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862166590')">Galaxy S20 Ultra</button></div>
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862133822')">Galaxy S20+</button></div>
-    </div>
-    <div class="txt-flex-m">
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-157862101054')">Galaxy S20</button></div>
-    </div>
-  </div>
-{% endif %}
+    <div class="text-center-responsive-d">
+    <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
+    {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+    {% assign total = 0 %}
+    {% for block in section.blocks %}
+      {%- assign collection = collections[block.settings.collection_handle] -%}
+      {% assign has_group = false %}
+      {% for product in collection.products %}
+        {% for variant in product.variants %}
+          {% assign _group = variant.metafields.c_f.color_group | default: blank %}
+          {% if _group != blank %}
+            {% assign has_group = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
 
-{% if which_page == 14705885213 %}
-  <div class="text-center-responsive-d">
-        <div class="column-d shop-by-size-included-in-div" onclick="toggleSection()"><span>Shop by size</span><i id="toggle" class="fright fas fa-angle-down"></i></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720689726')">Pixel 4 XL</button></div>
-        <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720624190')">Pixel 4</button></div>
-  </div>
+      {% unless has_group %}
+        {% break %}
+      {% endunless %}
 
-  <div class="text-center-responsive-m">
-    <div class="txt-flex-m">
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720689726')">Pixel 4 XL</button></div>
-      <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-151720624190')">Pixel 4</button></div>
-    </div>
-    <div class="txt-flex-m">
-    </div>
-  </div>
-{% endif %}
+      {% assign total = total | plus: 1 %}
+      <div class="column-d"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
+
+      {% endfor %}
+      </div>
+
+
+      {% assign totaldtwo = total | divided_by: 2 %}
+      {% assign totaldtwominusone = totaldtwo | minus: 1 %}
+
+      <div class="text-center-responsive-m">
+  
+      {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+      {% assign counter = 0 %}
+      {% for block in section.blocks %}
+        {%- assign collection = collections[block.settings.collection_handle] -%}
+        {% assign has_group = false %}
+        {% for product in collection.products %}
+          {% for variant in product.variants %}
+            {% assign _group = variant.metafields.c_f.color_group | default: blank %}
+            {% if _group != blank %}
+              {% assign has_group = true %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+        {% unless has_group %}
+          {% break %}
+        {% endunless %}
+
+        {% if counter == 0 or counter == totaldtwo  %}
+          <!--<div class="txt-flex-m">-->
+        {% endif %}
+          <div class="column-m"><button class="btn btn--outline" name="add" onclick="moveToPos('#scroll-{{ collection.id }}')">{{ block.settings.collection_title | default: collection.title | remove: " Cases" }}</button></div>
+        {% if counter == totaldtwominusone or counter == total %}
+          <!--</div>-->
+        {% endif %}
+      {% assign counter = counter | plus: 1 %}
+
+        {% endfor %}
+
+
+      </div>
+
+
 
   </section>
   <hr class="hr--section-shopby">
