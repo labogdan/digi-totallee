@@ -3412,6 +3412,7 @@ label[for="totalleeProtector"] {
 
   .collection-hero__title {
     margin-bottom: 10px;
+    margin-top: 10px;
 
     @include media-query($medium-up) {
       font-weight: 600;
@@ -6099,6 +6100,7 @@ color: #FAA916 !important; /* change color */
 }
 
 $breakpoint-mobile-collection: 650px;
+$breakpoint-mobile-header: 750px;
 
 
 @media only screen and (max-width: $breakpoint-mobile-collection) {
@@ -6137,14 +6139,17 @@ $breakpoint-mobile-collection: 650px;
 
 .txt-flex-m {
   display: block;
-  //width: 49%;
-  margin-right: 15px;
+  width: 50%;
+  //margin-right: 15px;
+  margin-left: 10px;
   justify-content: space-evenly;
 }
 
 .column-m {
   //width: 170px;
-  margin-bottom: 5px;
+  //margin-bottom: 5px;
+  margin: 5px;
+  float: left;
 }
 
 
@@ -6203,17 +6208,22 @@ $breakpoint-mobile-collection: 650px;
   }
 }
 
-@media only screen and (max-width: $breakpoint-mobile-collection) {
-
-  .collection-hero__callout-image {
-    display: none;
-  }
-  .hr--section-shopby {
-    margin: 15px 0 20px 0;
-  }
+@media only screen and (max-width: $breakpoint-mobile-header - 1) {
   .hero--small {
     margin-bottom: 20px;
   }
+  .collection-hero__callout-image {
+    display: none;
+  }
+}
+
+
+@media only screen and (max-width: $breakpoint-mobile-collection) {
+
+  .hr--section-shopby {
+    margin: 15px 0 20px 0;
+  }
+
 }
 
 .show-it {
