@@ -6,10 +6,10 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <div class="grid-view-item{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
-              
+
   <a class="grid-view-item__link text-center js-swatch-link" href="{{ product.url | within: collection }}">
-    <img class="grid-view-item__image js-image-swap"
-         src="{{ product.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}"
+    <img class="lazyload grid-view-item__image js-image-swap"
+         data-src="{{ product.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}"
          alt="{{ product.featured_image.alt }}">
 
     {% assign product_title = product.title %}
@@ -41,7 +41,7 @@
       </h2>
     {% else %}
       <h3 class="product-name lead">
-        {{ product.title }} | 
+        {{ product.title }} |
         <span class="product-price">
           {% include 'product-price' %}
         </span>

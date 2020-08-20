@@ -14,7 +14,7 @@
             <div class="hp-press__item">
               <h2 class="hp-press__quote font-base font-light color-body-text">{{ block.settings.quote }}</h2>
               <a class="hp-press__link">
-                <img src="{{ block.settings.image | img_url: '320x' }}" alt="{{ block.settings.image.alt }}" class="hp-press__image">
+                <img data-src="{{ block.settings.image | img_url: '320x' }}" alt="{{ block.settings.image.alt }}" class="lazyload hp-press__image">
               </a>
             </div>
           {% endfor %}

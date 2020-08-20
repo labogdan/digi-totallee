@@ -25,11 +25,11 @@
             {% assign block_image = block.settings.image | img_url: 'master' %}
             {% assign block_classname = block_classname | append: ' half-block__item--bg' %}
 
-            <div class="{{ block_classname }} js-block-bg"
-                 style="background-image: url('{{ block_image }}');">
-              <img src="{{ block_image }}"
+            <div class="lazyload {{ block_classname }} js-block-bg"
+                 data-bg='{{ block_image }}'>
+              <img data-src="{{ block_image }}"
                    alt="{{ block.settings.image.alt | default: block.settings.headline }}"
-                   class="half-block__image js-block-img">
+                   class="lazyload half-block__image js-block-img">
             </div>
 
           {% when 'video' %}
@@ -51,8 +51,9 @@
                   <video playsinline
                          loop
                          muted
-                         autoplay
-                         class="js-video"
+                         data-autoplay=""
+                         preload="none"
+                         class="lazyload js-video"
                          id="btf-video"
                          src="{{ block.settings.video_link }}"
                          type="{{ block.settings.video_type }}">
@@ -72,9 +73,9 @@
 
                     <div class="half-block__item--bg js-block-bg"
                          style="background-image: url('{{ block_image }}');">
-                      <img src="{{ block_image }}"
+                      <img data-src="{{ block_image }}"
                            alt="{{ block.settings.image.alt | default: block.settings.headline }}"
-                           class="half-block__image js-block-img">
+                           class="lazyload half-block__image js-block-img">
                     </div>
 
                   {% endif %}
@@ -82,7 +83,7 @@
                 {% endfor %}
               </div>
             </div>
-    
+
         {% endcase %}
 
       {% endcapture %}
@@ -119,20 +120,20 @@
               data-description="{{ product.description | escape }}"
               data-product-sku="{{product.handle}}"
                data-take-reviews="6">
-      
+
           </div>
         </div>
     {% elsif block.type == 'related' %}
     {% include 'related-products' %}
 
-    
+
       {% else %}
         <div class="half-block half-block--{{ block.type }}">
           {{ image_component }}
           {{ desc_component }}
         </div>
       {% endif %}
-    
+
     {% endfor %}
 
   </div>

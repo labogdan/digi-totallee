@@ -115,7 +115,9 @@ f=false,d=document;return{use_existing_jquery:function(){return use_existing_jqu
     {% endfor %}
   </script>
 
-
+  <script src="{{ 'lazysizes.min.js' | asset_url }}" defer="defer"></script>
+  <script src="https://afarkas.github.io/lazysizes/plugins/unveilhooks/ls.unveilhooks.min.js"></script>
+  <style>.lazyload,.lazyloading{opacity:0}.lazyloaded{opacity:1;transition:opacity.3s}</style>
 
   <!--[if (lte IE 9) ]>{{ 'match-media.min.js' | asset_url | script_tag }}<![endif]-->
 
@@ -139,7 +141,7 @@ f=false,d=document;return{use_existing_jquery:function(){return use_existing_jqu
   <!--[if lte IE 9]><script src="{{ 'totallee.js' | asset_url }}"></script><![endif]-->
 
   {{ content_for_header }}
-{%- include 'bold-common' -%}
+
 
 <script type="text/javascript">
 !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");

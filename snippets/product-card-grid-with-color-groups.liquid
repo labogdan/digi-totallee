@@ -27,8 +27,8 @@
 
 <div class="grid-view-item{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
   <a class="grid-view-item__link text-center js-swatch-link" href="{{ product_url }}">
-    <img class="grid-view-item__image js-image-swap"
-         src="{{ current_variant.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}"
+    <img class="lazyload grid-view-item__image js-image-swap"
+         data-src="{{ current_variant.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}"
          alt="{{ current_variant.featured_image.alt }}">
 
     {% assign product_title = product.title %}

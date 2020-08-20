@@ -864,7 +864,6 @@ totallee.ppVariants = (function () {
   }
 
   function init(sectionId) {
-    alert('init')
     props.sectionId = sectionId
 
     setState()
